@@ -1,5 +1,7 @@
 # Poetry Client Behat Extension
 
+[![Build Status](https://travis-ci.org/ec-europa/oe-poetry-behat.svg?branch=master)](https://travis-ci.org/ec-europa/oe-poetry-behat)
+
 Behat extension for [Poetry Client](https://github.com/ec-europa/oe-poetry-client).
 
 ## Usage
