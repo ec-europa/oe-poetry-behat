@@ -1,0 +1,22 @@
+{
+    "name": "ec-europa/oe-poetry-behat",
+    "description": "Poetry Client Behat extension.",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "license": "EUPL-1.1",
+    "require": {
+        "ec-europa/oe-poetry-client": "*",
+        "internations/http-mock": "^0.8"
+    },
+    "require-dev": {
+        "ec-europa/oe-code-review": "^0.0.2",
+        "behat/web-api-extension": "~1.0@dev",
+        "behat/behat": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "EC\\Behat\\PoetryExtension\\": "./src"
+        }
+    }
+}

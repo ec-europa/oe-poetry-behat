@@ -1,0 +1,14 @@
+default:
+  suites:
+    default:
+      path: %paths.base%/features
+      contexts:
+        - Behat\WebApiExtension\Context\WebApiContext
+        - EC\Behat\PoetryExtension\Context\PoetryContext
+  extensions:
+    Behat\WebApiExtension: ~
+    EC\Behat\PoetryExtension:
+      poetry:
+        base_url: http://localhost
+  formatters:
+    progress: ~
