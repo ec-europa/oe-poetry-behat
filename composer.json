@@ -7,7 +7,8 @@
     "license": "EUPL-1.1",
     "require": {
         "ec-europa/oe-poetry-client": "*",
-        "internations/http-mock": "^0.8"
+        "internations/http-mock": "^0.8",
+        "phpunit/phpunit": ">=3.3.0"
     },
     "require-dev": {
         "ec-europa/oe-code-review": "^0.0.2",
@@ -17,6 +18,11 @@
     "autoload": {
         "psr-4": {
             "EC\\Behat\\PoetryExtension\\": "./src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EC\\Behat\\PoetryExtension\\Tests\\": "./tests"
         }
     }
 }

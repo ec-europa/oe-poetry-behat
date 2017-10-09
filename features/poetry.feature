@@ -1,7 +1,7 @@
 @poetry
 Feature: Poetry mock server
 
-  Scenario: Poetry mock service setup
+  Scenario: Set Poetry response via raw XML
     Given the following Poetry service response:
     """
     <?xml version="1.0" encoding="UTF-8"?>

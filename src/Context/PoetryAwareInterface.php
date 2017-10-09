@@ -2,6 +2,7 @@
 namespace EC\Behat\PoetryExtension\Context;
 
 use Behat\Behat\Context\Context;
+use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 
 /**
@@ -12,31 +13,31 @@ use EC\Poetry\Poetry;
 interface PoetryAwareInterface extends Context
 {
     /**
-     * Get Poetry property.
-     *
      * @return \EC\Poetry\Poetry
-     *   Property value.
      */
     public function getPoetry();
 
     /**
      * @param \EC\Poetry\Poetry $poetry
-     *
-     * @return mixed
      */
     public function setPoetry(Poetry $poetry);
 
     /**
-     * Get PoetryParameters property.
-     *
+     * @return \EC\Behat\PoetryExtension\Context\Services\PoetryMock
+     */
+    public function getPoetryMock();
+
+    /**
+     * @param \EC\Behat\PoetryExtension\Context\Services\PoetryMock $poetryMock
+     */
+    public function setPoetryMock(PoetryMock $poetryMock);
+
+    /**
      * @return array
-     *   Property value.
      */
     public function getPoetryParameters();
 
     /**
-     * Sets parameters provided for Poetry.
-     *
      * @param array $parameters
      */
     public function setPoetryParameters(array $parameters);

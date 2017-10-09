@@ -6,6 +6,7 @@ use Behat\Behat\Context\ServiceContainer\ContextExtension;
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
 use EC\Behat\PoetryExtension\Context\Initializer\PoetryAwareInitializer;
+use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -67,16 +68,10 @@ class PoetryExtension implements ExtensionInterface
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        $container->setDefinition(self::POETRY_SERVICE, new Definition(Poetry::class));
-
-        $definition = new Definition(PoetryAwareInitializer::class, [
-            new Reference(self::POETRY_SERVICE),
-            '%poetry.parameters%',
-        ]);
-        $definition->addTag(ContextExtension::INITIALIZER_TAG, ['priority' => 0]);
-        $container->setDefinition('poetry.context_initializer', $definition);
-
         $container->setParameter('poetry.parameters', $config);
+        $this->loadContextInitializer($container);
+        $this->loadPoetry($container);
+        $this->loadPoetryMock($container);
     }
 
     /**
@@ -84,5 +79,41 @@ class PoetryExtension implements ExtensionInterface
      */
     public function process(ContainerBuilder $container)
     {
+    }
+
+    /**
+     * Load service definition into container builder.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    private function loadContextInitializer(ContainerBuilder $container)
+    {
+        $definition = new Definition(PoetryAwareInitializer::class, [
+            new Reference('poetry'),
+            new Reference('poetry_mock'),
+            '%poetry.parameters%',
+        ]);
+        $definition->addTag(ContextExtension::INITIALIZER_TAG, ['priority' => 0]);
+        $container->setDefinition('poetry.context_initializer', $definition);
+    }
+
+    /**
+     * Load service definition into container builder.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    private function loadPoetry(ContainerBuilder $container)
+    {
+        $container->setDefinition('poetry', new Definition(Poetry::class));
+    }
+
+    /**
+     * Load service definition into container builder.
+     *
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    private function loadPoetryMock(ContainerBuilder $container)
+    {
+        $container->setDefinition('poetry_mock', new Definition(PoetryMock::class));
     }
 }

@@ -8,6 +8,7 @@ use Behat\Behat\Context\Initializer\ContextInitializer;
 use Behat\Mink\Mink;
 use Behat\MinkExtension\Context\MinkAwareContext;
 use EC\Behat\PoetryExtension\Context\PoetryAwareInterface;
+use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 
 /**
@@ -23,6 +24,11 @@ class PoetryAwareInitializer implements ContextInitializer
     private $poetry;
 
     /**
+     * @var \EC\Behat\PoetryExtension\Context\Services\PoetryMock
+     */
+    private $poetryMock;
+
+    /**
      * @var array
      */
     private $parameters;
@@ -30,12 +36,14 @@ class PoetryAwareInitializer implements ContextInitializer
     /**
      * PoetryAwareInitializer constructor.
      *
-     * @param \EC\Poetry\Poetry $poetry
-     * @param array             $parameters
+     * @param \EC\Poetry\Poetry                                     $poetry
+     * @param \EC\Behat\PoetryExtension\Context\Services\PoetryMock $poetryMock
+     * @param array                                                 $parameters
      */
-    public function __construct(Poetry $poetry, array $parameters)
+    public function __construct(Poetry $poetry, PoetryMock $poetryMock, array $parameters)
     {
         $this->poetry = $poetry;
+        $this->poetryMock = $poetryMock;
         $this->parameters = $parameters;
     }
 
@@ -49,6 +57,7 @@ class PoetryAwareInitializer implements ContextInitializer
         }
 
         $context->setPoetry($this->poetry);
+        $context->setPoetryMock($this->poetryMock);
         $context->setPoetryParameters($this->parameters);
     }
 }
