@@ -22,6 +22,6 @@ Feature: Poetry mock server
     </POETRY>
     """
 
-    When I send a POST request to "http://localhost:28080/notification"
+    When I send a POST request to "http://localhost:28080/service"
     Then the response code should be 200
     And the response should contain "<codeDemandeur>WEB"

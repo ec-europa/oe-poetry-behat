@@ -114,6 +114,9 @@ class PoetryExtension implements ExtensionInterface
      */
     private function loadPoetryMock(ContainerBuilder $container)
     {
-        $container->setDefinition('poetry_mock', new Definition(PoetryMock::class));
+        $container->setDefinition('poetry_mock', new Definition(PoetryMock::class, [
+            new Reference('poetry'),
+            '%poetry.parameters%',
+        ]));
     }
 }

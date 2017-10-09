@@ -41,6 +41,6 @@ class PoetryContext extends RawPoetryContext
      */
     public function setupServerWithXmlResponse(PyStringNode $string)
     {
-        $this->getPoetryMock()->setResponse($string->getRaw());
+        $this->getPoetryMock()->setResponse('/service', $string->getRaw());
     }
 }
