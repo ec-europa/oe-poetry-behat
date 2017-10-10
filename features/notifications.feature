@@ -43,3 +43,47 @@ Feature: Server notifications
       | TestApplication.INFO: poetry.notification.status_updated                |
     And the test application log should not contain the following entries:
       | TestApplication.ERROR: poetry.exception |
+
+  Scenario: Poetry server can notify the client using a message.
+    Given that Poetry notifies the client with the following "notification.translation_received" message:
+    """
+    identifier:
+      code: "WEB"
+      year: "2017"
+      number: "40012"
+      version: "0"
+      part: "39"
+      product: "TRA"
+    targets:
+      -
+        format: "HTML"
+        language: "FR"
+        translated_file: "File64"
+    """
+
+    Then the test application receives the following message:
+    """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
+      <request communication="synchrone" id="7685067" type="translation">
+        <demandeId>
+          <codeDemandeur>WEB</codeDemandeur>
+          <annee>2017</annee>
+          <numero>40012</numero>
+          <version>0</version>
+          <partie>39</partie>
+          <produit>TRA</produit>
+        </demandeId>
+        <attributions format="HTML" lgCode="FR">
+          <attributionsFile>File64</attributionsFile>
+        </attributions>
+      </request>
+    </POETRY>
+    """
+
+    And the test application log should contain the following entries:
+      | TestApplication.INFO: poetry.notification_handler.received_notification |
+      | TestApplication.INFO: poetry.notification.parse                         |
+      | TestApplication.INFO: poetry.notification.translation_received          |
+    And the test application log should not contain the following entries:
+      | TestApplication.ERROR: poetry.exception |

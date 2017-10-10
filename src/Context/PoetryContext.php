@@ -69,6 +69,20 @@ class PoetryContext extends RawPoetryContext
     }
 
     /**
+     * @param string                           $name
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @Given that Poetry notifies the client with the following :name message:
+     */
+    public function notifyClientWithMessage($name, PyStringNode $string)
+    {
+        $values = $this->parse($string);
+        $message = $this->poetry->get($name)->withArray($values);
+        $rendered = $this->poetry->getRenderer()->render($message);
+        $this->poetryMock->sendNotification($rendered);
+    }
+
+    /**
      * @param string $response
      */
     protected function setResponse($response)
