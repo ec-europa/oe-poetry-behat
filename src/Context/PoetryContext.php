@@ -53,10 +53,7 @@ class PoetryContext extends RawPoetryContext
      */
     public function setServerResponseWithMessage($name, PyStringNode $string)
     {
-        $values = $this->parse($string);
-        $message = $this->poetry->get($name)->withArray($values);
-        $rendered = $this->poetry->getRenderer()->render($message);
-        $this->setResponse($rendered);
+        $this->setResponse($this->getRenderedMessage($name, $string));
     }
 
     /**
@@ -89,10 +86,7 @@ class PoetryContext extends RawPoetryContext
      */
     public function notifyClientWithMessage($name, PyStringNode $string)
     {
-        $values = $this->parse($string);
-        $message = $this->poetry->get($name)->withArray($values);
-        $rendered = $this->poetry->getRenderer()->render($message);
-        $this->poetryMock->sendNotification($rendered);
+        $this->poetryMock->sendNotification($this->getRenderedMessage($name, $string));
     }
 
     /**
@@ -101,5 +95,19 @@ class PoetryContext extends RawPoetryContext
     protected function setResponse($response)
     {
         $this->getPoetryMock()->setResponse($this->poetryParameters['server']['endpoint'], $response);
+    }
+
+    /**
+     * @param string                           $name
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @return string
+     */
+    protected function getRenderedMessage($name, PyStringNode $string)
+    {
+        $values = $this->parse($string);
+        $message = $this->poetry->get($name)->withArray($values);
+
+        return $this->poetry->getRenderer()->render($message);
     }
 }
