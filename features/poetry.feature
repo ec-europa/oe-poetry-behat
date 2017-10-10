@@ -2,7 +2,7 @@
 Feature: Poetry mock server
 
   Scenario: Set Poetry response via raw XML
-    Given the following Poetry service response:
+    Given the following Poetry response:
     """
     <?xml version="1.0" encoding="UTF-8"?>
     <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
@@ -22,6 +22,4 @@ Feature: Poetry mock server
     </POETRY>
     """
 
-    When I send a POST request to "http://localhost:28080/service"
-    Then the response code should be 200
-    And the response should contain "<codeDemandeur>WEB"
+

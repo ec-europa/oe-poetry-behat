@@ -39,11 +39,11 @@ class PoetryMockTest extends TestCase
         ]);
 
         $this->mock = new PoetryMock($this->poetry, [
-            'poetry' => [
+            'client' => [
               'base_url' => 'http://localhost:8082',
-              'notification_endpoint' => '/notification',
-              'notification_username' => 'foo',
-              'notification_password' => 'bar',
+              'endpoint' => '/notification',
+              'username' => 'foo',
+              'password' => 'bar',
             ],
         ]);
         $this->mock->setUp('8082');

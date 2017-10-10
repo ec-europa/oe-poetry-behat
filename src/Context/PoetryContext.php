@@ -21,7 +21,7 @@ class PoetryContext extends RawPoetryContext
     public function beforeScenario(BeforeScenarioScope $scope)
     {
         $parameters = $this->getPoetryParameters();
-        $this->getPoetryMock()->setUp($parameters['mock']['port'], $parameters['mock']['host']);
+        $this->getPoetryMock()->setUp($parameters['server']['port'], $parameters['server']['host']);
     }
 
     /**
@@ -37,10 +37,11 @@ class PoetryContext extends RawPoetryContext
     /**
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
-     * @Given the following Poetry service response:
+     * @Given the following Poetry response:
      */
     public function setupServerWithXmlResponse(PyStringNode $string)
     {
-        $this->getPoetryMock()->setResponse('/service', $string->getRaw());
+        $parameters = $this->getPoetryParameters();
+        $this->getPoetryMock()->setResponse($parameters['server']['endpoint'], $string->getRaw());
     }
 }

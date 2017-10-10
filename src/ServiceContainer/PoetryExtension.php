@@ -20,8 +20,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class PoetryExtension implements ExtensionInterface
 {
-    const POETRY_SERVICE = 'poetry';
-
     /**
      * {@inheritdoc}
      */
@@ -44,20 +42,21 @@ class PoetryExtension implements ExtensionInterface
     {
         $builder
           ->children()
-            ->arrayNode('mock')
+            ->arrayNode('server')
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('host')->defaultValue('localhost')->end()
                     ->scalarNode('port')->defaultValue('28080')->end()
+                    ->scalarNode('endpoint')->defaultValue('/service')->end()
                 ->end()
             ->end()
-            ->arrayNode('poetry')
+            ->arrayNode('client')
                 ->isRequired()
                 ->children()
                     ->scalarNode('base_url')->isRequired()->end()
-                    ->scalarNode('notification_endpoint')->defaultValue('/notification')->end()
-                    ->scalarNode('notification_username')->defaultValue('username')->end()
-                    ->scalarNode('notification_password')->defaultValue('password')->end()
+                    ->scalarNode('endpoint')->isRequired()->end()
+                    ->scalarNode('username')->defaultValue('username')->end()
+                    ->scalarNode('password')->defaultValue('password')->end()
                 ->end()
             ->end()
         ->end();
