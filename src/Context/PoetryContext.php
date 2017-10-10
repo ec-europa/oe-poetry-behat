@@ -15,14 +15,20 @@ use Behat\Gherkin\Node\TableNode;
 class PoetryContext extends RawPoetryContext
 {
     /**
+     * @var array
+     */
+    private $backupParameters = [];
+
+    /**
      * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
      *
      * @BeforeScenario @poetry
      */
     public function beforeScenario(BeforeScenarioScope $scope)
     {
-        $server = $this->poetryParameters['server'];
-        $this->getPoetryMock()->setUp($server['port'], $server['host']);
+        $parameters = $this->getPoetryParameters();
+        $this->backupParameters = $parameters['client'];
+        $this->getPoetryMock()->setUp($parameters['server']['port'], $parameters['server']['host']);
     }
 
     /**
@@ -32,13 +38,26 @@ class PoetryContext extends RawPoetryContext
      */
     public function afterScenario(AfterScenarioScope $scope)
     {
+        $this->setPoetryParameters($this->backupParameters);
         $this->getPoetryMock()->tearDown();
     }
 
     /**
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
-     * @Given that Poetry will return the following XML response:
+     * @Given the following Poetry client settings:
+     */
+    public function overrideClientParameters(PyStringNode $string)
+    {
+        $parameters = $this->getPoetryParameters();
+        $parameters['client'] = array_merge($parameters['client'], $this->parse($string));
+        $this->setPoetryParameters($parameters);
+    }
+
+    /**
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @Given Poetry will return the following XML response:
      */
     public function setServerResponseWithXml(PyStringNode $string)
     {
@@ -49,7 +68,7 @@ class PoetryContext extends RawPoetryContext
      * @param string                           $name
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
-     * @Given that Poetry will return the following :name message response:
+     * @Given Poetry will return the following :name message response:
      */
     public function setServerResponseWithMessage($name, PyStringNode $string)
     {
@@ -59,7 +78,7 @@ class PoetryContext extends RawPoetryContext
     /**
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
-     * @Given that Poetry notifies the client with the following XML:
+     * @Given Poetry notifies the client with the following XML:
      */
     public function notifyClientWithXml(PyStringNode $string)
     {
@@ -82,7 +101,7 @@ class PoetryContext extends RawPoetryContext
      * @param string                           $name
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
-     * @Given that Poetry notifies the client with the following :name message:
+     * @Given Poetry notifies the client with the following :name message:
      */
     public function notifyClientWithMessage($name, PyStringNode $string)
     {
@@ -94,7 +113,7 @@ class PoetryContext extends RawPoetryContext
      */
     protected function setResponse($response)
     {
-        $this->getPoetryMock()->setResponse($this->poetryParameters['server']['endpoint'], $response);
+        $this->getPoetryMock()->setResponse($this->getPoetryParameters()['server']['endpoint'], $response);
     }
 
     /**

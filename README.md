@@ -52,7 +52,7 @@ All scenarios and/or features that wish to use Poetry Behat extension steps will
 To send a raw XML notification message to the current client use:
 
 ```gherkin
-    Given that Poetry notifies the client with the following XML:
+    When Poetry notifies the client with the following XML:
     """
     <?xml version="1.0" encoding="UTF-8"?>
     ...
@@ -62,7 +62,7 @@ To send a raw XML notification message to the current client use:
 Or, if you want to express the message in a `withArray()` format, use:
 
 ```gherkin
-    Given that Poetry notifies the client with the following "notification.translation_received" message:
+    When Poetry notifies the client with the following "notification.translation_received" message:
     """
     identifier:
       code: "WEB"
@@ -75,7 +75,7 @@ Or, if you want to express the message in a `withArray()` format, use:
 To setup test responses for the Poetry server use:
 
 ```gherkin
-    Given that Poetry will return the following XML response:
+    When Poetry will return the following XML response:
     """
     <?xml version="1.0" encoding="utf-8"?><POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
         <request communication="synchrone" id="WEB/2017/40029/0/0/TRA" type="status">
@@ -89,7 +89,7 @@ To setup test responses for the Poetry server use:
 Or, if you want to express the message in a `withArray()` format, use:
 
 ```gherkin
-    Given that Poetry will return the following "response.status" message response:
+    When Poetry will return the following "response.status" message response:
     """
     identifier:
       code: WEB
@@ -107,3 +107,15 @@ Client response can be asserted by using the following step:
       | <statusMessage>OK</statusMessage> |
 ```
 
+Client settings can be overridden by using the following step:
+
+```gherkin
+    Given the following Poetry client settings:
+    """
+      username: foo
+      password: bar
+    """
+```
+
+For more examples please refer to the Poetry Behat Extension's [tests features](features) baring in mind that steps
+beginning with `the test application...` are not available to library users.

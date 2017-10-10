@@ -2,7 +2,7 @@
 Feature: Server responses
 
   Scenario: Poetry server can return a raw XML response.
-    Given that Poetry will return the following XML response:
+    Given Poetry will return the following XML response:
     """
     <?xml version="1.0" encoding="utf-8"?><POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
         <request communication="synchrone" id="WEB/2017/40029/0/0/TRA" type="status">
@@ -46,7 +46,7 @@ Feature: Server responses
     """
 
   Scenario: Poetry server can return a response from a message array.
-    Given that Poetry will return the following "response.status" message response:
+    Given Poetry will return the following "response.status" message response:
     """
     identifier:
       code: WEB

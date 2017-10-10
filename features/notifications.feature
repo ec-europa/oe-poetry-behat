@@ -2,7 +2,7 @@
 Feature: Server notifications
 
   Scenario: Poetry server can notify the client using raw XML.
-    Given that Poetry notifies the client with the following XML:
+    When Poetry notifies the client with the following XML:
     """
     <?xml version="1.0" encoding="UTF-8"?>
     <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
@@ -45,27 +45,61 @@ Feature: Server notifications
       | TestApplication.ERROR: poetry.exception |
 
   Scenario: Poetry server can notify the client using a message.
-    Given that Poetry notifies the client with the following "notification.translation_received" message:
+    When Poetry notifies the client with the following "notification.translation_received" message:
     """
-    identifier:
-      code: "WEB"
-      year: "2017"
-      number: "40012"
-      version: "0"
-      part: "39"
-      product: "TRA"
-    targets:
-      -
-        format: "HTML"
-        language: "FR"
-        translated_file: "File64"
+      identifier:
+        code: "WEB"
+        year: "2017"
+        number: "40012"
+        version: "0"
+        part: "39"
+        product: "TRA"
+      targets:
+        -
+          format: "HTML"
+          language: "FR"
+          translated_file: "File64"
     """
 
     Then client response contains the following text:
       | <statusMessage>OK</statusMessage> |
+
     And the test application log should contain the following entries:
       | TestApplication.INFO: poetry.notification_handler.received_notification |
       | TestApplication.INFO: poetry.notification.parse                         |
       | TestApplication.INFO: poetry.notification.translation_received          |
     And the test application log should not contain the following entries:
       | TestApplication.ERROR: poetry.exception |
+
+  Scenario: Scenarios can override Poetry extension configuration.
+
+    Given the following Poetry client settings:
+    """
+      username: foo
+      password: bar
+    """
+
+    When Poetry notifies the client with the following "notification.translation_received" message:
+    """
+      identifier:
+        code: "WEB"
+        year: "2017"
+        number: "40012"
+        version: "0"
+        part: "39"
+        product: "TRA"
+      targets:
+        -
+          format: "HTML"
+          language: "FR"
+          translated_file: "File64"
+    """
+
+    Then the test application log should contain the following entries:
+      | TestApplication.INFO: poetry.notification_handler.received_notification                      |
+      | TestApplication.INFO: poetry.notification.parse                                              |
+      | TestApplication.ERROR: poetry.exception                                                      |
+      | Poetry service cannot authenticate on notification callback: username or password not valid. |
+
+    And the test application log should not contain the following entries:
+      | TestApplication.INFO: poetry.notification.translation_received |

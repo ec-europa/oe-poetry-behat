@@ -49,12 +49,10 @@ class PoetryAwareInitializer implements ContextInitializer
      */
     public function initializeContext(Context $context)
     {
-        if (!$context instanceof PoetryAwareInterface) {
-            return;
+        if ($context instanceof PoetryAwareInterface) {
+            $context->setPoetry($this->poetry);
+            $context->setPoetryMock($this->poetryMock);
+            $context->setPoetryParameters($this->parameters);
         }
-
-        $context->setPoetry($this->poetry);
-        $context->setPoetryMock($this->poetryMock);
-        $context->setPoetryParameters($this->parameters);
     }
 }

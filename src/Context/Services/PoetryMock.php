@@ -81,6 +81,28 @@ class PoetryMock extends \PHPUnit_Framework_Assert
     }
 
     /**
+     * Get Parameters property.
+     *
+     * @return array
+     *   Property value.
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Set Parameters property.
+     *
+     * @param array $parameters
+     *   Property value.
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
      * Set response body.
      *
      * @param string $endpoint

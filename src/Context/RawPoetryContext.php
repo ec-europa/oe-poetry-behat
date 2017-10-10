@@ -28,11 +28,6 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
     protected $poetryMock;
 
     /**
-     * @var array
-     */
-    protected $poetryParameters;
-
-    /**
      * {@inheritdoc}
      */
     public function setPoetry(Poetry $poetry)
@@ -45,7 +40,7 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
      */
     public function setPoetryParameters(array $parameters)
     {
-        $this->poetryParameters = $parameters;
+        $this->poetryMock->setParameters($parameters);
     }
 
     /**
@@ -61,7 +56,7 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
      */
     public function getPoetryParameters()
     {
-        return $this->poetryParameters;
+        return $this->poetryMock->getParameters();
     }
 
     /**
