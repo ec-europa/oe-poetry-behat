@@ -5,7 +5,6 @@ namespace EC\Behat\PoetryExtension\Tests;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use EC\Behat\PoetryExtension\Context\RawPoetryContext;
-use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use EC\Poetry\Poetry;
 use Monolog\Handler\StreamHandler;
