@@ -80,13 +80,13 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
      *
      * @param \Behat\Gherkin\Node\PyStringNode $node
      *
-     * @return array
+     * @return mixed
      */
     protected function parse(PyStringNode $node)
     {
         // Sanitize PyString test by removing initial indentation spaces.
         $strings = $node->getStrings();
-        if ($strings) {
+        if (!empty($strings)) {
             preg_match('/^(\s+)/', $strings[0], $matches);
             $indentation = isset($matches[1]) ? strlen($matches[1]) : 0;
             foreach ($strings as $key => $string) {
