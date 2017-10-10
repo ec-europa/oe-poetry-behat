@@ -8,11 +8,11 @@
     "require": {
         "ec-europa/oe-poetry-client": "*",
         "internations/http-mock": "^0.8",
+        "behat/behat": "^3",
         "phpunit/phpunit": "^5"
     },
     "require-dev": {
         "ec-europa/oe-code-review": "^0.0.2",
-        "behat/behat": "^3.4",
         "monolog/monolog": "^1.23"
     },
     "autoload": {
