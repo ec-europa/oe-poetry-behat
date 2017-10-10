@@ -20,17 +20,17 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
     /**
      * @var \EC\Poetry\Poetry
      */
-    private $poetry;
+    protected $poetry;
 
     /**
      * @var \EC\Behat\PoetryExtension\Context\Services\PoetryMock
      */
-    private $poetryMock;
+    protected $poetryMock;
 
     /**
      * @var array
      */
-    private $poetryParameters;
+    protected $poetryParameters;
 
     /**
      * {@inheritdoc}

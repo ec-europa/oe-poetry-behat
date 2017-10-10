@@ -20,8 +20,8 @@ class PoetryContext extends RawPoetryContext
      */
     public function beforeScenario(BeforeScenarioScope $scope)
     {
-        $parameters = $this->getPoetryParameters();
-        $this->getPoetryMock()->setUp($parameters['server']['port'], $parameters['server']['host']);
+        $server = $this->poetryParameters['server'];
+        $this->getPoetryMock()->setUp($server['port'], $server['host']);
     }
 
     /**
@@ -41,8 +41,7 @@ class PoetryContext extends RawPoetryContext
      */
     public function setupServerWithXmlResponse(PyStringNode $string)
     {
-        $parameters = $this->getPoetryParameters();
-        $this->getPoetryMock()->setResponse($parameters['server']['endpoint'], $string->getRaw());
+        $this->setResponse($string->getRaw());
     }
 
     /**
@@ -53,11 +52,17 @@ class PoetryContext extends RawPoetryContext
      */
     public function setupServerWithMessageResponse($name, PyStringNode $string)
     {
-        $parameters = $this->getPoetryParameters();
         $values = $this->parse($string);
-        /** @var \EC\Poetry\Messages\MessageInterface $message */
-        $message = $this->getPoetry()->get($name)->withArray($values);
-        $rendered = $this->getPoetry()->getRenderer()->render($message);
-        $this->getPoetryMock()->setResponse($parameters['server']['endpoint'], $rendered);
+        $message = $this->poetry->get($name)->withArray($values);
+        $rendered = $this->poetry->getRenderer()->render($message);
+        $this->setResponse($rendered);
+    }
+
+    /**
+     * @param string $response
+     */
+    protected function setResponse($response)
+    {
+        $this->getPoetryMock()->setResponse($this->poetryParameters['server']['endpoint'], $response);
     }
 }
