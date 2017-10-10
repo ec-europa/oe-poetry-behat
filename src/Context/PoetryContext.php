@@ -5,6 +5,7 @@ namespace EC\Behat\PoetryExtension\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * Class PoetryContext
@@ -66,6 +67,18 @@ class PoetryContext extends RawPoetryContext
     public function notifyClientWithXml(PyStringNode $string)
     {
         $this->poetryMock->sendNotification($string->getRaw());
+    }
+
+    /**
+     * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @Then client response contains the following text:
+     */
+    public function assertNotificationResponse(TableNode $table)
+    {
+        foreach ($table->getRows() as $row) {
+            $this->assertContains($row[0], $this->poetryMock->getNotificationResponse());
+        }
     }
 
     /**

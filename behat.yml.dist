@@ -3,12 +3,12 @@ default:
     default:
       path: '%paths.base%/features'
       contexts:
-        - 'EC\Behat\PoetryExtension\Tests\FeatureContext'
         - 'EC\Behat\PoetryExtension\Context\PoetryContext'
+        - 'EC\Behat\PoetryExtension\Tests\FeatureContext'
   extensions:
     EC\Behat\PoetryExtension:
       client:
-        base_url: 'http://localhost:8085'
+        base_url: 'http://localhost:28080'
         endpoint: '/notification'
   formatters:
     progress: ~

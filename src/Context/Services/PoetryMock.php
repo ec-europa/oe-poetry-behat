@@ -25,6 +25,11 @@ class PoetryMock extends \PHPUnit_Framework_Assert
     private $parameters;
 
     /**
+     * @var string
+     */
+    private $notificationResponse;
+
+    /**
      * PoetryMock constructor.
      *
      * @param \EC\Poetry\Poetry $poetry
@@ -107,10 +112,21 @@ class PoetryMock extends \PHPUnit_Framework_Assert
         $wsdl = 'data://text/plain;base64,'.base64_encode($rendered);
         $client = new \SoapClient($wsdl, ['cache_wsdl' => WSDL_CACHE_NONE]);
 
-        return $client->__soapCall('handle', [
+        $this->notificationResponse = $client->__soapCall('handle', [
             $this->parameters['client']['username'],
             $this->parameters['client']['password'],
             $message,
         ]);
+    }
+
+    /**
+     * Get NotificationResponse property.
+     *
+     * @return string
+     *   Property value.
+     */
+    public function getNotificationResponse()
+    {
+        return $this->notificationResponse;
     }
 }

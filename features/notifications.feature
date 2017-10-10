@@ -61,26 +61,8 @@ Feature: Server notifications
         translated_file: "File64"
     """
 
-    Then the test application receives the following message:
-    """
-    <?xml version="1.0" encoding="UTF-8"?>
-    <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
-      <request communication="synchrone" id="7685067" type="translation">
-        <demandeId>
-          <codeDemandeur>WEB</codeDemandeur>
-          <annee>2017</annee>
-          <numero>40012</numero>
-          <version>0</version>
-          <partie>39</partie>
-          <produit>TRA</produit>
-        </demandeId>
-        <attributions format="HTML" lgCode="FR">
-          <attributionsFile>File64</attributionsFile>
-        </attributions>
-      </request>
-    </POETRY>
-    """
-
+    Then client response contains the following text:
+      | <statusMessage>OK</statusMessage> |
     And the test application log should contain the following entries:
       | TestApplication.INFO: poetry.notification_handler.received_notification |
       | TestApplication.INFO: poetry.notification.parse                         |

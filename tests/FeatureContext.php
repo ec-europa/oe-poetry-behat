@@ -36,20 +36,8 @@ class FeatureContext extends RawPoetryContext
      */
     public function beforeScenario(BeforeScenarioScope $scope)
     {
-        $parameters = $this->getPoetryParameters();
-        $url = parse_url($parameters['client']['base_url']);
-        $this->getPoetryMock()->setUp($url['port'], $url['host']);
+        @unlink($this->log);
         $this->setupTestApplication();
-    }
-
-    /**
-     * @param \Behat\Behat\Hook\Scope\AfterScenarioScope $scope
-     *
-     * @AfterScenario @poetry
-     */
-    public function afterScenario(AfterScenarioScope $scope)
-    {
-        $this->getPoetryMock()->tearDown();
     }
 
     /**
@@ -114,7 +102,6 @@ class FeatureContext extends RawPoetryContext
         $filename = $this->log;
 
         $callback = function (Response $response) use ($parameters, $filename) {
-            @unlink($filename);
             $logger = new Logger('TestApplication');
             $logger->pushHandler(new StreamHandler($filename));
             $poetry = new Poetry([
