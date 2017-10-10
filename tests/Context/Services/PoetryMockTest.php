@@ -47,7 +47,6 @@ class PoetryMockTest extends TestCase
             ],
         ]);
         $this->mock->setUp('8082');
-        $this->setupTestClient();
     }
 
     /**
@@ -72,48 +71,5 @@ class PoetryMockTest extends TestCase
         $this->assertSame('mocked body', $response);
         $this->assertSame('POST', $this->mock->getHttp()->requests->latest()->getMethod());
         $this->assertSame('/service', $this->mock->getHttp()->requests->latest()->getPath());
-    }
-
-    /**
-     * Test notification.
-     */
-    public function testNotification()
-    {
-        /** @var \EC\Poetry\Messages\Responses\Status $status */
-        $status = $this->poetry->get('response.status');
-        $status->setMessageId('1234');
-        $status->withStatus()
-          ->setType('request')
-          ->setTime(date('H:i:s'))
-          ->setDate(date('d/m/Y'))
-          ->setCode('0')
-          ->setMessage('OK');
-        $notification = $this->poetry->getRenderer()->render($status);
-
-        $response = $this->mock->sendNotification($notification);
-        $this->assertContains('<statusMessage>OK</statusMessage>', $response);
-    }
-
-    /**
-     * Setup test client.
-     */
-    protected function setupTestClient()
-    {
-        $callback = function (Response $response) {
-            $poetry = new Poetry([
-                'notification.username' => 'foo',
-                'notification.password' => 'bar',
-            ]);
-            $poetry->getServer()->handle();
-        };
-
-        $this->mock->getHttp()->mock
-          ->when()
-          ->methodIs('POST')
-          ->pathIs('/notification')
-          ->then()
-          ->callback($callback)
-          ->end();
-        $this->mock->getHttp()->setUp();
     }
 }

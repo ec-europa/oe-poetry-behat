@@ -5,6 +5,8 @@ namespace EC\Behat\PoetryExtension\Context;
 use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 use InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
+use Behat\Gherkin\Node\PyStringNode;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class RawPoetryContext
@@ -76,6 +78,29 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
     public function setPoetryMock(PoetryMock $poetryMock)
     {
         $this->poetryMock = $poetryMock;
+    }
+
+    /**
+     * Parse YAML contained in a PyString node.
+     *
+     * @param \Behat\Gherkin\Node\PyStringNode $node
+     *
+     * @return array
+     */
+    protected function parse(PyStringNode $node)
+    {
+        // Sanitize PyString test by removing initial indentation spaces.
+        $strings = $node->getStrings();
+        if ($strings) {
+            preg_match('/^(\s+)/', $strings[0], $matches);
+            $indentation = isset($matches[1]) ? strlen($matches[1]) : 0;
+            foreach ($strings as $key => $string) {
+                $strings[$key] = substr($string, $indentation);
+            }
+        }
+        $raw = implode("\n", $strings);
+
+        return Yaml::parse($raw);
     }
 
     /**
