@@ -39,7 +39,7 @@ class PoetryContext extends RawPoetryContext
      *
      * @Given that Poetry will return the following XML response:
      */
-    public function setupServerWithXmlResponse(PyStringNode $string)
+    public function setServerResponseWithXml(PyStringNode $string)
     {
         $this->setResponse($string->getRaw());
     }
@@ -50,12 +50,22 @@ class PoetryContext extends RawPoetryContext
      *
      * @Given that Poetry will return the following :name message response:
      */
-    public function setupServerWithMessageResponse($name, PyStringNode $string)
+    public function setServerResponseWithMessage($name, PyStringNode $string)
     {
         $values = $this->parse($string);
         $message = $this->poetry->get($name)->withArray($values);
         $rendered = $this->poetry->getRenderer()->render($message);
         $this->setResponse($rendered);
+    }
+
+    /**
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @Given that Poetry notifies the client with the following XML:
+     */
+    public function notifyClientWithXml(PyStringNode $string)
+    {
+        $this->poetryMock->sendNotification($string->getRaw());
     }
 
     /**

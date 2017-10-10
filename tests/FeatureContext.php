@@ -3,10 +3,13 @@
 namespace EC\Behat\PoetryExtension\Tests;
 
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 use EC\Behat\PoetryExtension\Context\RawPoetryContext;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use EC\Poetry\Poetry;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,6 +23,11 @@ class FeatureContext extends RawPoetryContext
      * @var \Guzzle\Http\Message\Response
      */
     private $response = null;
+
+    /**
+     * @var string
+     */
+    private $log = __DIR__.'/test.log';
 
     /**
      * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
@@ -71,17 +79,48 @@ class FeatureContext extends RawPoetryContext
     }
 
     /**
+     * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @Then the test application log should contain the following entries:
+     */
+    public function assertLogEntriesPresence(TableNode $table)
+    {
+        $content = file_get_contents($this->log);
+        foreach ($table->getRows() as $row) {
+            $this->assertContains($row[0], $content);
+        }
+    }
+
+    /**
+     * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @Then the test application log should not contain the following entries:
+     */
+    public function assertLogEntriesAbsence(TableNode $table)
+    {
+        $content = file_get_contents($this->log);
+        foreach ($table->getRows() as $row) {
+            $this->assertNotContains($row[0], $content);
+        }
+    }
+
+    /**
      * Setup test application.
      */
     protected function setupTestApplication()
     {
         $parameters = $this->getPoetryParameters();
         $mock = $this->getPoetryMock();
+        $filename = $this->log;
 
-        $callback = function (Response $response) use ($parameters) {
+        $callback = function (Response $response) use ($parameters, $filename) {
+            @unlink($filename);
+            $logger = new Logger('TestApplication');
+            $logger->pushHandler(new StreamHandler($filename));
             $poetry = new Poetry([
                 'notification.username' => $parameters['client']['username'],
-                'notification.password' => $parameters['client']['username'],
+                'notification.password' => $parameters['client']['password'],
+                'logger' => $logger,
             ]);
             $poetry->getServer()->handle();
         };

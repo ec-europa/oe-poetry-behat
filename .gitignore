@@ -2,4 +2,5 @@
 grumphp.yml
 phpunit.xml
 composer.lock
+*.log
 .idea
