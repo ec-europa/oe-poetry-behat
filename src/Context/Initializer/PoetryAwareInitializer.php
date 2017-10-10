@@ -4,9 +4,6 @@ namespace EC\Behat\PoetryExtension\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
-
-use Behat\Mink\Mink;
-use Behat\MinkExtension\Context\MinkAwareContext;
 use EC\Behat\PoetryExtension\Context\PoetryAwareInterface;
 use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
