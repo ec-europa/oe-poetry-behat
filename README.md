@@ -17,7 +17,7 @@ default:
         - 'EC\Behat\PoetryExtension\Context\PoetryContext'
   extensions:
     EC\Behat\PoetryExtension:
-      client:
+      application:
         base_url: 'http://local.dev'  # Required: application base URL running Poetry Client library.
         endpoint: '/my-endpoint'      # Required: notification endpoint on your application.
 ```
@@ -32,18 +32,18 @@ default:
         - 'EC\Behat\PoetryExtension\Context\PoetryContext'
   extensions:
     EC\Behat\PoetryExtension:
-      client:
-        base_url: 'http://local.dev'  # Required: application base URL running Poetry Client library.
-        endpoint: '/my-endpoint'      # Required: notification endpoint on your application.
-        username: 'username'          # Optional: username required for the mock service to authenticate on your application.
-        password: 'password'          # Optional: password required for the mock service to authenticate on your application.
-      server:
-        host: 'localhost'             # Optional: host where mock Poetry server will be running.
-        port: '28080'                 # Optional: mock Poetry server port.
-        endpoint: '/service'          # Optional: mock Poetry server endpoint.
+      application:
+        base_url: 'http://local.dev'  # Required: application base URL running the Poetry Client library.
+        endpoint: '/my-endpoint'      # Required: notification endpoint for your application.
+      service:
+        host: 'localhost'             # Optional: host where mock Poetry service will be running.
+        port: '28080'                 # Optional: mock Poetry service port.
+        endpoint: '/service'          # Optional: mock Poetry service endpoint.
+        username: 'username'          # Optional: username used by the mock service to authenticate on your application.
+        password: 'password'          # Optional: password used by the mock service to authenticate on your application.
 ```
 
-Client settings can be also overridden in your Behat scenarios.
+Service parameters can be also overridden in your Behat scenarios (see below).
 
 ## Usage
 
@@ -109,10 +109,10 @@ Then client response contains the following text:
   | <statusMessage>OK</statusMessage>  |
 ```
 
-Client settings can be overridden by using the following step:
+Application parameters can be overridden by using the following step:
 
 ```gherkin
-Given the following Poetry client settings:
+When Poetry service uses the following settings:
 """
   username: foo
   password: bar

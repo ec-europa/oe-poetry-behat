@@ -27,8 +27,8 @@ class PoetryContext extends RawPoetryContext
     public function beforeScenario(BeforeScenarioScope $scope)
     {
         $parameters = $this->getPoetryParameters();
-        $this->backupParameters = $parameters['client'];
-        $this->getPoetryMock()->setUp($parameters['server']['port'], $parameters['server']['host']);
+        $this->backupParameters = $parameters['service'];
+        $this->getPoetryMock()->setUp($parameters['service']['port'], $parameters['service']['host']);
     }
 
     /**
@@ -45,12 +45,12 @@ class PoetryContext extends RawPoetryContext
     /**
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
-     * @Given the following Poetry client settings:
+     * @Given Poetry service uses the following settings:
      */
-    public function overrideClientParameters(PyStringNode $string)
+    public function overrideServiceParameters(PyStringNode $string)
     {
         $parameters = $this->getPoetryParameters();
-        $parameters['client'] = array_merge($parameters['client'], $this->parse($string));
+        $parameters['service'] = array_merge($parameters['service'], $this->parse($string));
         $this->setPoetryParameters($parameters);
     }
 
@@ -113,7 +113,7 @@ class PoetryContext extends RawPoetryContext
      */
     protected function setResponse($response)
     {
-        $this->getPoetryMock()->setResponse($this->getPoetryParameters()['server']['endpoint'], $response);
+        $this->getPoetryMock()->setResponse($this->getPoetryParameters()['service']['endpoint'], $response);
     }
 
     /**

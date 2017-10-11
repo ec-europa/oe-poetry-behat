@@ -7,7 +7,7 @@ default:
         - 'EC\Behat\PoetryExtension\Tests\FeatureContext'
   extensions:
     EC\Behat\PoetryExtension:
-      client:
+      application:
         base_url: 'http://localhost:28080'
         endpoint: '/notification'
   formatters:

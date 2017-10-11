@@ -104,8 +104,8 @@ class FeatureContext extends RawPoetryContext
             $logger = new Logger('TestApplication');
             $logger->pushHandler(new StreamHandler($filename));
             $poetry = new Poetry([
-                'notification.username' => $parameters['client']['username'],
-                'notification.password' => $parameters['client']['password'],
+                'notification.username' => $parameters['service']['username'],
+                'notification.password' => $parameters['service']['password'],
                 'logger' => $logger,
             ]);
             $poetry->getServer()->handle();
@@ -114,7 +114,7 @@ class FeatureContext extends RawPoetryContext
         $mock->getHttp()->mock
           ->when()
           ->methodIs('POST')
-          ->pathIs($parameters['client']['endpoint'])
+          ->pathIs($parameters['application']['endpoint'])
           ->then()
           ->callback($callback)
           ->end();
@@ -126,8 +126,8 @@ class FeatureContext extends RawPoetryContext
      */
     protected function getServerUrl()
     {
-        $server = $this->getPoetryParameters()['server'];
+        $service = $this->getPoetryParameters()['service'];
 
-        return sprintf('http://%s:%s%s', $server['host'], $server['port'], $server['endpoint']);
+        return sprintf('http://%s:%s%s', $service['host'], $service['port'], $service['endpoint']);
     }
 }
