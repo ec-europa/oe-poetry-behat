@@ -43,6 +43,9 @@ class PoetryMockTest extends TestCase
               'endpoint' => '/notification',
             ],
             'service' => [
+              'host' => 'localhost',
+              'port' => '8082',
+              'endpoint' => '/service',
               'username' => 'foo',
               'password' => 'bar',
             ],
@@ -72,5 +75,20 @@ class PoetryMockTest extends TestCase
         $this->assertSame('mocked body', $response);
         $this->assertSame('POST', $this->mock->getHttp()->requests->latest()->getMethod());
         $this->assertSame('/service', $this->mock->getHttp()->requests->latest()->getPath());
+    }
+
+    /**
+     * Test WSDL.
+     */
+    public function testWsdl()
+    {
+        $this->mock->setupWsdl();
+        $response = $this->mock
+          ->getClient()
+          ->get('http://localhost:8082/wsdl')
+          ->send()
+          ->getBody(true);
+
+        $this->assertContains('<soap:address location="http://localhost:8082/service"/>', $response);
     }
 }

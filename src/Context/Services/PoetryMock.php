@@ -151,4 +151,25 @@ class PoetryMock extends \PHPUnit_Framework_Assert
     {
         return $this->notificationResponse;
     }
+
+    /**
+     * Setup WSDL response.
+     */
+    public function setupWsdl()
+    {
+        $parameters = $this->parameters;
+        $poetry = new Poetry();
+        $body = $poetry
+          ->getRenderEngine()
+          ->addFolder('mock', realpath(__DIR__.'/../../../templates'))
+          ->render('mock::service-wsdl', $parameters['service']);
+        $this->http->mock
+          ->when()
+          ->methodIs('GET')
+          ->pathIs('/wsdl')
+          ->then()
+          ->body($body)
+          ->end();
+        $this->http->setUp();
+    }
 }
