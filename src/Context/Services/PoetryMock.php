@@ -129,14 +129,14 @@ class PoetryMock extends \PHPUnit_Framework_Assert
      */
     public function sendNotification($message)
     {
-        $url = $this->parameters['client']['base_url'].$this->parameters['client']['endpoint'];
+        $url = $this->parameters['application']['base_url'].$this->parameters['application']['endpoint'];
         $rendered = $this->poetry->getRenderEngine()->render('wsdl', ['callback' => $url]);
         $wsdl = 'data://text/plain;base64,'.base64_encode($rendered);
         $client = new \SoapClient($wsdl, ['cache_wsdl' => WSDL_CACHE_NONE]);
 
         $this->notificationResponse = $client->__soapCall('handle', [
-            $this->parameters['client']['username'],
-            $this->parameters['client']['password'],
+            $this->parameters['service']['username'],
+            $this->parameters['service']['password'],
             $message,
         ]);
     }

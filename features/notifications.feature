@@ -73,13 +73,13 @@ Feature: Server notifications
 
   Scenario: Scenarios can override Poetry extension configuration.
 
-    Given the following Poetry client settings:
+    When Poetry service uses the following settings:
     """
       username: foo
       password: bar
     """
 
-    When Poetry notifies the client with the following "notification.translation_received" message:
+    And Poetry notifies the client with the following "notification.translation_received" message:
     """
       identifier:
         code: "WEB"

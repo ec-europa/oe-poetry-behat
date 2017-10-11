@@ -5,7 +5,6 @@ namespace EC\Behat\PoetryExtension\Tests\Context\Services;
 use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PoetryMockTest
@@ -39,9 +38,11 @@ class PoetryMockTest extends TestCase
         ]);
 
         $this->mock = new PoetryMock($this->poetry, [
-            'client' => [
+            'application' => [
               'base_url' => 'http://localhost:8082',
               'endpoint' => '/notification',
+            ],
+            'service' => [
               'username' => 'foo',
               'password' => 'bar',
             ],
