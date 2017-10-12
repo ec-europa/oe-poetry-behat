@@ -48,6 +48,7 @@ class PoetryExtension implements ExtensionInterface
                     ->scalarNode('host')->defaultValue('localhost')->end()
                     ->scalarNode('port')->defaultValue('28080')->end()
                     ->scalarNode('endpoint')->defaultValue('/service')->end()
+                    ->scalarNode('wsdl')->defaultValue('/wsdl')->end()
                     ->scalarNode('username')->defaultValue('username')->end()
                     ->scalarNode('password')->defaultValue('password')->end()
                 ->end()

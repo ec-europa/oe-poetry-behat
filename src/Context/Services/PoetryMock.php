@@ -159,7 +159,7 @@ class PoetryMock extends \PHPUnit_Framework_Assert
         $this->http->mock
           ->when()
           ->methodIs('GET')
-          ->pathIs('/wsdl')
+          ->pathIs($this->parameters['service']['wsdl'])
           ->then()
           ->body($body)
           ->end();

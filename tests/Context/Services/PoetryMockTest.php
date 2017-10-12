@@ -46,6 +46,7 @@ class PoetryMockTest extends TestCase
               'host' => 'localhost',
               'port' => '8082',
               'endpoint' => '/service',
+              'wsdl' => '/wsdl',
               'username' => 'foo',
               'password' => 'bar',
             ],

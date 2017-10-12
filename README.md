@@ -36,11 +36,12 @@ default:
         base_url: 'http://local.dev'  # Required: application base URL running the Poetry Client library.
         endpoint: '/my-endpoint'      # Required: notification endpoint for your application.
       service:
-        host: 'localhost'             # Optional: host where mock Poetry service will be running.
-        port: '28080'                 # Optional: mock Poetry service port.
-        endpoint: '/service'          # Optional: mock Poetry service endpoint.
-        username: 'username'          # Optional: username used by the mock service to authenticate on your application.
-        password: 'password'          # Optional: password used by the mock service to authenticate on your application.
+        host: 'localhost'             # Optional: host where mock Poetry service will be running, defaults to `localhost`.
+        port: '28080'                 # Optional: mock Poetry service port, defaults to `28080`.
+        endpoint: '/service'          # Optional: mock Poetry service endpoint, defaults to `/service`.
+        wsdl: '/wsdl'                 # Optional: mock Poetry service WSDL endpoint, defaults to `/wsdl`.
+        username: 'username'          # Optional: username used by the mock service to authenticate on your application, defaults to `username`.
+        password: 'password'          # Optional: password used by the mock service to authenticate on your application, defaults to `password`.
 ```
 
 Service parameters can be also overridden in your Behat scenarios (see below).
