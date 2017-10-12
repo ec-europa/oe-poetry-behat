@@ -49,6 +49,7 @@ class PoetryMock extends \PHPUnit_Framework_Assert
     {
         static::setUpHttpMockBeforeClass($this->parameters['service']['port'], $this->parameters['service']['host']);
         $this->setUpHttpMock();
+        $this->setupWsdl();
     }
 
     /**
@@ -153,8 +154,8 @@ class PoetryMock extends \PHPUnit_Framework_Assert
      */
     public function setupWsdl()
     {
-        $parameters = $this->parameters;
-        $body = $this->poetry->getRenderEngine()->render('mock::service-wsdl', $parameters['service']);
+        $url = $this->getServiceUrl($this->parameters['service']['endpoint']);
+        $body = $this->poetry->getRenderEngine()->render('mock::service-wsdl', ['url' => $url]);
         $this->http->mock
           ->when()
           ->methodIs('GET')
@@ -163,5 +164,15 @@ class PoetryMock extends \PHPUnit_Framework_Assert
           ->body($body)
           ->end();
         $this->http->setUp();
+    }
+
+    /**
+     * @param string $endpoint
+     *
+     * @return string
+     */
+    public function getServiceUrl($endpoint)
+    {
+        return sprintf("http://%s:%s%s", $this->parameters['service']['host'], $this->parameters['service']['port'], $endpoint);
     }
 }

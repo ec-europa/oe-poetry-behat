@@ -4,9 +4,6 @@
  * Mock WSDL template file.
  */
 ?>
-<?php
-$url = sprintf("http://%s:%s%s", $host, $port, $endpoint);
-?>
 <definitions name="PoetryBehatTestSoapServer" targetNamespace="<?= $url; ?>" xmlns:tns="<?= $url; ?>" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="<?= $url; ?>/types">
   <types>
     <xsd:schema targetNamespace="<?= $url; ?>/types" xmlns="<?= $url; ?>/types"/>

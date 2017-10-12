@@ -50,6 +50,7 @@ class PoetryMockTest extends TestCase
               'password' => 'bar',
             ],
         ]);
+        $this->mock->setUp();
     }
 
     /**
@@ -81,7 +82,6 @@ class PoetryMockTest extends TestCase
      */
     public function testWsdl()
     {
-        $this->mock->setupWsdl();
         $response = $this->mock
           ->getClient()
           ->get('http://localhost:8082/wsdl')
