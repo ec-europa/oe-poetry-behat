@@ -67,13 +67,13 @@ class PoetryMockTest extends TestCase
      */
     public function testSimpleRequest()
     {
-        $this->mock->setResponse('/service', 'mocked body');
+        $this->mock->setResponse('/service', 'body');
         $response = $this->mock
           ->getClient()
           ->post('http://localhost:8082/service')
           ->send()
           ->getBody(true);
-        $this->assertSame('mocked body', $response);
+        $this->assertContains('<faultstring>Bad Request</faultstring>', $response);
         $this->assertSame('POST', $this->mock->getHttp()->requests->latest()->getMethod());
         $this->assertSame('/service', $this->mock->getHttp()->requests->latest()->getPath());
     }

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 class FeatureContext extends RawPoetryContext
 {
     /**
-     * @var \Guzzle\Http\Message\Response
+     * @var \EC\Poetry\Messages\Responses\AbstractResponse
      */
     private $response = null;
 
@@ -40,17 +40,6 @@ class FeatureContext extends RawPoetryContext
     }
 
     /**
-     * @When the test application sends a request to Poetry
-     */
-    public function sendGenericRequest()
-    {
-        $this->response = $this->getPoetryMock()
-          ->getClient()
-          ->post($this->getServerUrl())
-          ->send();
-    }
-
-    /**
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
      * @Then the test application should receive the following response:
@@ -61,8 +50,7 @@ class FeatureContext extends RawPoetryContext
         if ($this->response === null) {
             throw new \InvalidArgumentException('No request performed yet');
         }
-        $actual = $this->response->getBody(true);
-        $this->assertSameXml($expected, $actual);
+        $this->assertSameXml($expected, $this->response->getRaw());
     }
 
     /**
@@ -89,6 +77,22 @@ class FeatureContext extends RawPoetryContext
         foreach ($table->getRows() as $row) {
             $this->assertNotContains($row[0], $content);
         }
+    }
+
+    /**
+     * @param string                           $name
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @When the test application sends the following :name message to Poetry:
+     */
+    public function sendMessage($name, PyStringNode $string)
+    {
+        /** @var \EC\Poetry\Messages\MessageInterface $message */
+        $poetry = $this->poetry;
+        $wsdl = $this->poetryMock->getServiceUrl('/wsdl');
+        $poetry->getSettings()->set('service.wsdl', $wsdl);
+        $message = $poetry->get($name)->withArray($this->parse($string));
+        $this->response = $poetry->getClient()->send($message);
     }
 
     /**

@@ -6,6 +6,7 @@ use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 use InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
 use Behat\Gherkin\Node\PyStringNode;
+use InterNations\Component\HttpMock\Request\UnifiedRequest;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -117,5 +118,18 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
 
         $this->assertXmlStringEqualsXmlString($expected, $actual);
         $this->assertEqualXMLStructure($element1, $element2);
+    }
+
+    /**
+     * @param \InterNations\Component\HttpMock\Request\UnifiedRequest $request
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     */
+    protected function assertRequest(UnifiedRequest $request, PyStringNode $string)
+    {
+        $parser = $this->poetry->get('parser');
+        $parser->addXmlContent((string) $request->getBody());
+        $message = $parser->getContent('SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:requestService/msg');
+        $message = htmlspecialchars_decode($message);
+        $this->assertSameXml($string->getRaw(), $message);
     }
 }

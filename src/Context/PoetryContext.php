@@ -108,6 +108,22 @@ class PoetryContext extends RawPoetryContext
     }
 
     /**
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @Then Poetry service should receive the following request:
+     */
+    public function assertServiceRequest(PyStringNode $string)
+    {
+        /** @var \EC\Poetry\Services\Parser $parser */
+        $requests = $this->poetryMock->getHttp()->requests;
+        if ($requests->count() == 0) {
+            throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
+        }
+
+        $this->assertRequest($requests->latest(), $string);
+    }
+
+    /**
      * @param string $response
      */
     protected function setResponse($response)

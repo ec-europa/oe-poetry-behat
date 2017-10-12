@@ -4,6 +4,8 @@ namespace EC\Behat\PoetryExtension\Context\Services;
 
 use EC\Poetry\Poetry;
 use InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PoetryMock
@@ -107,12 +109,23 @@ class PoetryMock extends \PHPUnit_Framework_Assert
      */
     public function setResponse($endpoint, $body)
     {
+        $uri = $this->getServiceUrl($this->parameters['service']['endpoint']);
+
         $this->http->mock
           ->when()
           ->methodIs('POST')
           ->pathIs($endpoint)
           ->then()
-          ->body($body)
+          ->callback(static function (Response $response) use ($body, $uri) {
+              $server = new \SoapServer(null, [
+                  'stream_context' => stream_context_create(),
+                  'cache_wsdl' => WSDL_CACHE_NONE,
+                  'uri' => $uri,
+              ]);
+              $service = new PoetryMockHandler($body);
+              $server->setObject($service);
+              $server->handle();
+          })
           ->end();
         $this->http->setUp();
     }
