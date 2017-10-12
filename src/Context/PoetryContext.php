@@ -26,9 +26,8 @@ class PoetryContext extends RawPoetryContext
      */
     public function beforeScenario(BeforeScenarioScope $scope)
     {
-        $parameters = $this->getPoetryParameters();
-        $this->backupParameters = $parameters['service'];
-        $this->getPoetryMock()->setUp($parameters['service']['port'], $parameters['service']['host']);
+        $this->getPoetryMock()->setUp();
+        $this->backupParameters = $this->getPoetryParameters()['service'];
     }
 
     /**

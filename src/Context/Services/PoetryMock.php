@@ -39,19 +39,15 @@ class PoetryMock extends \PHPUnit_Framework_Assert
     {
         $this->poetry = $poetry;
         $this->parameters = $parameters;
+        $this->poetry->getRenderEngine()->addFolder('mock', realpath(__DIR__.'/../../../templates'));
     }
 
     /**
      * Setup HTTP server, to be used in @BeforeScenario callbacks.
-     *
-     * @param string $port
-     * @param string $host
-     * @param string $basePath
-     * @param string $name
      */
-    public function setUp($port = null, $host = null, $basePath = null, $name = null)
+    public function setUp()
     {
-        static::setUpHttpMockBeforeClass($port, $host, $basePath, $name);
+        static::setUpHttpMockBeforeClass($this->parameters['service']['port'], $this->parameters['service']['host']);
         $this->setUpHttpMock();
     }
 
@@ -158,11 +154,7 @@ class PoetryMock extends \PHPUnit_Framework_Assert
     public function setupWsdl()
     {
         $parameters = $this->parameters;
-        $poetry = new Poetry();
-        $body = $poetry
-          ->getRenderEngine()
-          ->addFolder('mock', realpath(__DIR__.'/../../../templates'))
-          ->render('mock::service-wsdl', $parameters['service']);
+        $body = $this->poetry->getRenderEngine()->render('mock::service-wsdl', $parameters['service']);
         $this->http->mock
           ->when()
           ->methodIs('GET')

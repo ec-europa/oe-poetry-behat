@@ -50,7 +50,6 @@ class PoetryMockTest extends TestCase
               'password' => 'bar',
             ],
         ]);
-        $this->mock->setUp('8082');
     }
 
     /**
