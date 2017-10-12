@@ -124,6 +124,31 @@ class PoetryContext extends RawPoetryContext
     }
 
     /**
+     * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @Then Poetry service received request should contain the following text:
+     */
+    public function assertPartialServiceRequest(TableNode $table)
+    {
+        /** @var \EC\Poetry\Services\Parser $parser */
+        $requests = $this->poetryMock->getHttp()->requests;
+        if ($requests->count() == 0) {
+            throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
+        }
+
+        $parser = $this->poetry->get('parser');
+        $parser->addXmlContent((string) $requests->latest()->getBody());
+        $message = $parser->getContent('SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:requestService/msg');
+        $message = htmlspecialchars_decode($message);
+        $parser = $this->poetry->get('parser');
+        $parser->addXmlContent($message);
+
+        foreach ($table->getRows() as $row) {
+            $this->assertContains($row[0], $parser->html());
+        }
+    }
+
+    /**
      * @param string $response
      */
     protected function setResponse($response)

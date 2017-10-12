@@ -177,3 +177,6 @@ Feature: Server responses
     </POETRY>
     """
 
+    And Poetry service received request should contain the following text:
+      | <attributionsDelai>12/09/2017</attributionsDelai>  |
+      | <serviceDemandeur>IE/CE/EAC/C/4</serviceDemandeur> |
