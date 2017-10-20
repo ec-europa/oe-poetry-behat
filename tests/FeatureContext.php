@@ -9,6 +9,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use EC\Poetry\Poetry;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -111,6 +112,7 @@ class FeatureContext extends RawPoetryContext
                 'notification.username' => $parameters['service']['username'],
                 'notification.password' => $parameters['service']['password'],
                 'logger' => $logger,
+                'log_level' => LogLevel::DEBUG,
             ]);
             $poetry->getServer()->handle();
         };

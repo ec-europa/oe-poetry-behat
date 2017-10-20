@@ -23,7 +23,7 @@ Feature: Server responses
     </POETRY>
     """
 
-    When the test application sends the following "request.create_request" message to Poetry:
+    When the test application sends the following "request.create_translation_request" message to Poetry:
     """
       identifier:
         code: STSI
@@ -86,7 +86,7 @@ Feature: Server responses
         message: OK
     """
 
-    When the test application sends the following "request.send_review_request" message to Poetry:
+    When the test application sends the following "request.create_review_request" message to Poetry:
     """
       identifier:
         code: STSI
