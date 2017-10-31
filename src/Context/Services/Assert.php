@@ -42,7 +42,8 @@ class Assert extends \PHPUnit_Framework_Assert
     public static function assertContainsXml($contains, $target)
     {
         $root = simplexml_load_string($contains)->getName();
-        $contains = self::xmlToArray($contains);
+        $element = simplexml_load_string($contains);
+        $contains = self::elementToArray($element);
 
         $document = new \DOMDocument();
         $document->loadXML($target);
@@ -53,13 +54,14 @@ class Assert extends \PHPUnit_Framework_Assert
         }
 
         $found = false;
-            /** @var \DOMElement $node */
         foreach ($nodes as $node) {
-            $array = self::nodeToArray($node);
+            $element = simplexml_import_dom($node);
+            $array = self::elementToArray($element);
             try {
                 Assert::assertEquals($array, $contains);
                 $found = true;
             } catch (\Exception $e) {
+                // Do not catch as exception will be thrown later, in case.
             }
         }
 
@@ -67,27 +69,12 @@ class Assert extends \PHPUnit_Framework_Assert
     }
 
     /**
-     * @param string $xml
+     * @param \SimpleXMLElement $element
      *
      * @return array
      */
-    protected static function xmlToArray($xml)
+    protected static function elementToArray(\SimpleXMLElement $element)
     {
-        $element = simplexml_load_string($xml);
-        $json = json_encode($element);
-        $array = json_decode($json, true);
-
-        return [$element->getName() => $array];
-    }
-
-    /**
-     * @param \DOMNode $node
-     *
-     * @return array
-     */
-    protected static function nodeToArray(\DOMNode $node)
-    {
-        $element = simplexml_import_dom($node);
         $json = json_encode($element);
         $array = json_decode($json, true);
 
