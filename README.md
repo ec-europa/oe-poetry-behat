@@ -110,6 +110,21 @@ Then client response contains the following text:
   | <statusMessage>OK</statusMessage>  |
 ```
 
+Or, if you want to assert XML portions, use:
+
+```gherkin
+And Poetry service received request should contain the following XML portion:
+"""
+<documentSource format="HTML" legiswrite="No">
+    <documentSourceName>content.html</documentSourceName>
+    <documentSourceFile>BASE64ENCODEDFILECONTENT</documentSourceFile>
+    <documentSourceLang lgCode="EN">
+        <documentSourceLangPages>1</documentSourceLangPages>
+    </documentSourceLang>
+</documentSource>
+"""
+```
+
 Application parameters can be overridden by using the following step:
 
 ```gherkin
