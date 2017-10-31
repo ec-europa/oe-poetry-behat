@@ -66,7 +66,7 @@ Feature: Server responses
         </request>
     </POETRY>
     """
-
+@run
   Scenario: Poetry server can return a response from a message array.
     Given Poetry will return the following "response.status" message response:
     """
@@ -140,8 +140,7 @@ Feature: Server responses
     Then Poetry service should receive the following request:
     """
     <?xml version="1.0" encoding="UTF-8"?>
-    <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
+    <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
         <request communication="asynchrone" id="STSI/2017/40017/0/11/REV" type="newPost">
             <demandeId>
                 <codeDemandeur>STSI</codeDemandeur><annee>2017</annee><numero>40017</numero><version>0</version><partie>11</partie><produit>REV</produit>
@@ -180,3 +179,22 @@ Feature: Server responses
     And Poetry service received request should contain the following text:
       | <attributionsDelai>12/09/2017</attributionsDelai>  |
       | <serviceDemandeur>IE/CE/EAC/C/4</serviceDemandeur> |
+
+    And Poetry service received request should contain the following XML portion:
+    """
+    <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
+        <request communication="asynchrone" id="STSI/2017/40017/0/11/REV" type="newPost">
+            <contacts type="auteur"><contactNickname>john</contactNickname></contacts>
+            <contacts type="secretaire"><contactNickname>john</contactNickname></contacts>
+            <contacts type="contact"><contactNickname>john</contactNickname></contacts>
+            <contacts type="responsable"><contactNickname>mark</contactNickname></contacts>
+            <documentSource format="HTML" legiswrite="No">
+                <documentSourceName>content.html</documentSourceName>
+                <documentSourceFile>BASE64ENCODEDFILECONTENT</documentSourceFile>
+                <documentSourceLang lgCode="EN">
+                    <documentSourceLangPages>1</documentSourceLangPages>
+                </documentSourceLang>
+            </documentSource>
+        </request>
+    </POETRY>
+    """

@@ -2,6 +2,7 @@
 
 namespace EC\Behat\PoetryExtension\Context;
 
+use EC\Behat\PoetryExtension\Context\Services\Assert;
 use EC\Behat\PoetryExtension\Context\Services\PoetryMock;
 use EC\Poetry\Poetry;
 use InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
@@ -14,7 +15,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package EC\Behat\PoetryExtension\Context
  */
-class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareInterface
+class RawPoetryContext implements PoetryAwareInterface
 {
     use HttpMockTrait;
 
@@ -100,27 +101,6 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
     }
 
     /**
-     * Assert that two XML messages are the same.
-     *
-     * @param string $expected
-     * @param string $actual
-     */
-    protected function assertSameXml($expected, $actual)
-    {
-        $doc1 = new \DOMDocument();
-        $doc1->loadXML($actual);
-
-        $doc2 = new \DOMDocument();
-        $doc2->loadXML($expected);
-
-        $element1 = $doc1->getElementsByTagName('POETRY')->item(0);
-        $element2 = $doc2->getElementsByTagName('POETRY')->item(0);
-
-        $this->assertXmlStringEqualsXmlString($expected, $actual);
-        $this->assertEqualXMLStructure($element1, $element2);
-    }
-
-    /**
      * @param \InterNations\Component\HttpMock\Request\UnifiedRequest $request
      * @param \Behat\Gherkin\Node\PyStringNode $string
      */
@@ -130,6 +110,6 @@ class RawPoetryContext extends \PHPUnit_Framework_Assert implements PoetryAwareI
         $parser->addXmlContent((string) $request->getBody());
         $message = $parser->getContent('SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:requestService/msg');
         $message = htmlspecialchars_decode($message);
-        $this->assertSameXml($string->getRaw(), $message);
+        Assert::assertSameXml($string->getRaw(), $message, 'POETRY');
     }
 }

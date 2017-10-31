@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use EC\Behat\PoetryExtension\Context\RawPoetryContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use EC\Behat\PoetryExtension\Context\Services\Assert;
 use EC\Poetry\Poetry;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -51,7 +52,7 @@ class FeatureContext extends RawPoetryContext
         if ($this->response === null) {
             throw new \InvalidArgumentException('No request performed yet');
         }
-        $this->assertSameXml($expected, $this->response->getRaw());
+        Assert::assertSameXml($expected, $this->response->getRaw(), 'POETRY');
     }
 
     /**
@@ -63,7 +64,7 @@ class FeatureContext extends RawPoetryContext
     {
         $content = file_get_contents($this->log);
         foreach ($table->getRows() as $row) {
-            $this->assertContains($row[0], $content);
+            Assert::assertContains($row[0], $content);
         }
     }
 
@@ -76,7 +77,7 @@ class FeatureContext extends RawPoetryContext
     {
         $content = file_get_contents($this->log);
         foreach ($table->getRows() as $row) {
-            $this->assertNotContains($row[0], $content);
+            Assert::assertNotContains($row[0], $content);
         }
     }
 

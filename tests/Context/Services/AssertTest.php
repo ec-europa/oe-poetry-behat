@@ -1,0 +1,85 @@
+<?php
+
+namespace EC\Behat\PoetryExtension\Tests\Context\Services;
+
+use EC\Behat\PoetryExtension\Context\Services\Assert;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Class AssertTest
+ *
+ * @package EC\Behat\PoetryExtension\Tests\Context\Services
+ */
+class AssertTest extends TestCase
+{
+    /**
+     * Test Assert::assertContainsXml().
+     */
+    public function testAssertContainsXml()
+    {
+        $actual = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="">
+    <request communication="synchrone" id="2843832" type="status">
+        <demandeId>
+            <codeDemandeur>TEST</codeDemandeur>
+            <annee>2017</annee>
+            <numero>40025</numero>
+            <version>3</version>
+            <partie>6</partie>
+            <produit>TRA</produit>
+        </demandeId>
+        <status code="0" type="request">
+            <statusDate>31/07/2017</statusDate>
+            <statusTime>17:06:15</statusTime>
+            <statusMessage>OK</statusMessage>
+        </status>
+        <status code="ONG" type="demande">
+            <statusDate>31/07/2017</statusDate>
+            <statusTime>15:50:58</statusTime>
+            <statusMessage>REQUEST ACCEPTED</statusMessage>
+        </status>
+        <status code="ONG" lgCode="DE" type="attribution">
+            <statusDate>31/07/2017</statusDate>
+            <statusTime>00:00:00</statusTime>
+        </status>
+        <status code="ONG" lgCode="FR" type="attribution">
+            <statusDate>31/07/2017</statusDate>
+            <statusTime>00:00:00</statusTime>
+        </status>
+        <attributions format="HTML" lgCode="DE">
+            <attributionsDelai>22/08/2017 23:59</attributionsDelai>
+            <attributionsDelaiAccepted>22/08/2017 23:59</attributionsDelaiAccepted>
+        </attributions>
+        <attributions format="HTML" lgCode="FR">
+            <attributionsDelai>22/08/2017 23:59</attributionsDelai>
+            <attributionsDelaiAccepted>22/08/2017 23:59</attributionsDelaiAccepted>
+        </attributions>
+    </request>
+</POETRY>
+
+XML;
+
+        $expected = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="">
+    <request communication="synchrone" id="2843832" type="status">
+        <demandeId>
+            <codeDemandeur>TEST</codeDemandeur>
+            <annee>2017</annee>
+            <numero>40025</numero>
+            <version>3</version>
+            <partie>6</partie>
+            <produit>TRA</produit>
+        </demandeId>
+    </request>
+        <status code="ONG" lgCode="DE" type="attribution">
+            <statusDate>31/07/2017</statusDate>
+            <statusTime>00:00:00</statusTime>
+        </status>    
+</POETRY>
+XML;
+
+        Assert::assertContainsXml($expected, $actual);
+    }
+}

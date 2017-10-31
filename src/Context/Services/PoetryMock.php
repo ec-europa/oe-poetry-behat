@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package EC\Behat\PoetryExtension\Context\Services
  */
-class PoetryMock extends \PHPUnit_Framework_Assert
+class PoetryMock extends Assert
 {
     use HttpMockTrait;
 

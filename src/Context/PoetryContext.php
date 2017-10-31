@@ -6,6 +6,7 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use EC\Behat\PoetryExtension\Context\Services\Assert;
 
 /**
  * Class PoetryContext
@@ -92,7 +93,7 @@ class PoetryContext extends RawPoetryContext
     public function assertNotificationResponse(TableNode $table)
     {
         foreach ($table->getRows() as $row) {
-            $this->assertContains($row[0], $this->poetryMock->getNotificationResponse());
+            Assert::assertContains($row[0], $this->poetryMock->getNotificationResponse());
         }
     }
 
@@ -144,8 +145,27 @@ class PoetryContext extends RawPoetryContext
         $parser->addXmlContent($message);
 
         foreach ($table->getRows() as $row) {
-            $this->assertContains($row[0], $parser->html());
+            Assert::assertContains($row[0], $parser->html());
         }
+    }
+
+    /**
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @Then Poetry service received request should contain the following XML portion:
+     */
+    public function assertPartialXmlServiceRequest(PyStringNode $string)
+    {
+        /** @var \EC\Poetry\Services\Parser $parser */
+        $requests = $this->poetryMock->getHttp()->requests;
+        if ($requests->count() == 0) {
+            throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
+        }
+
+        $expected = $string->getRaw();
+        $actual = $requests->latest()->getBody();
+
+        return;
     }
 
     /**
