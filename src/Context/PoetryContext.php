@@ -137,13 +137,9 @@ class PoetryContext extends RawPoetryContext
             throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
         }
 
-        $parser = $this->poetry->get('parser');
-        $parser->addXmlContent((string) $requests->latest()->getBody());
-        $message = $parser->getContent('SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:requestService/msg');
-        $message = htmlspecialchars_decode($message);
+        $message = $this->extractSoapBody((string) $requests->latest()->getBody());
         $parser = $this->poetry->get('parser');
         $parser->addXmlContent($message);
-
         foreach ($table->getRows() as $row) {
             Assert::assertContains($row[0], $parser->html());
         }
@@ -162,10 +158,17 @@ class PoetryContext extends RawPoetryContext
             throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
         }
 
-        $expected = $string->getRaw();
-        $actual = $requests->latest()->getBody();
+        $contains = $string->getRaw();
+        Assert::assertContainsXml($contains, $this->extractSoapBody((string) $requests->latest()->getBody()));
+    }
 
-        return;
+    protected function extractSoapBody($body)
+    {
+        $parser = $this->poetry->get('parser');
+        $parser->addXmlContent($body);
+        $message = $parser->getContent('SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:requestService/msg');
+
+        return htmlspecialchars_decode($message);
     }
 
     /**

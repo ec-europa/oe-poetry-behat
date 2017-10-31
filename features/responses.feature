@@ -182,19 +182,11 @@ Feature: Server responses
 
     And Poetry service received request should contain the following XML portion:
     """
-    <POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
-        <request communication="asynchrone" id="STSI/2017/40017/0/11/REV" type="newPost">
-            <contacts type="auteur"><contactNickname>john</contactNickname></contacts>
-            <contacts type="secretaire"><contactNickname>john</contactNickname></contacts>
-            <contacts type="contact"><contactNickname>john</contactNickname></contacts>
-            <contacts type="responsable"><contactNickname>mark</contactNickname></contacts>
-            <documentSource format="HTML" legiswrite="No">
-                <documentSourceName>content.html</documentSourceName>
-                <documentSourceFile>BASE64ENCODEDFILECONTENT</documentSourceFile>
-                <documentSourceLang lgCode="EN">
-                    <documentSourceLangPages>1</documentSourceLangPages>
-                </documentSourceLang>
-            </documentSource>
-        </request>
-    </POETRY>
+    <documentSource format="HTML" legiswrite="No">
+        <documentSourceName>content.html</documentSourceName>
+        <documentSourceFile>BASE64ENCODEDFILECONTENT</documentSourceFile>
+        <documentSourceLang lgCode="EN">
+            <documentSourceLangPages>1</documentSourceLangPages>
+        </documentSourceLang>
+    </documentSource>
     """

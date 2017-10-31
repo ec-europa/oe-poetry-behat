@@ -3,7 +3,9 @@
 namespace EC\Behat\PoetryExtension\Tests\Context\Services;
 
 use EC\Behat\PoetryExtension\Context\Services\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class AssertTest
@@ -14,72 +16,32 @@ class AssertTest extends TestCase
 {
     /**
      * Test Assert::assertContainsXml().
+     *
+     * @param string $target
+     * @param string $contains
+     * @param bool   $expected
+     *
+     * @dataProvider containsProvider
      */
-    public function testAssertContainsXml()
+    public function testAssertContainsXml($target, $contains, $expected)
     {
-        $actual = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="">
-    <request communication="synchrone" id="2843832" type="status">
-        <demandeId>
-            <codeDemandeur>TEST</codeDemandeur>
-            <annee>2017</annee>
-            <numero>40025</numero>
-            <version>3</version>
-            <partie>6</partie>
-            <produit>TRA</produit>
-        </demandeId>
-        <status code="0" type="request">
-            <statusDate>31/07/2017</statusDate>
-            <statusTime>17:06:15</statusTime>
-            <statusMessage>OK</statusMessage>
-        </status>
-        <status code="ONG" type="demande">
-            <statusDate>31/07/2017</statusDate>
-            <statusTime>15:50:58</statusTime>
-            <statusMessage>REQUEST ACCEPTED</statusMessage>
-        </status>
-        <status code="ONG" lgCode="DE" type="attribution">
-            <statusDate>31/07/2017</statusDate>
-            <statusTime>00:00:00</statusTime>
-        </status>
-        <status code="ONG" lgCode="FR" type="attribution">
-            <statusDate>31/07/2017</statusDate>
-            <statusTime>00:00:00</statusTime>
-        </status>
-        <attributions format="HTML" lgCode="DE">
-            <attributionsDelai>22/08/2017 23:59</attributionsDelai>
-            <attributionsDelaiAccepted>22/08/2017 23:59</attributionsDelaiAccepted>
-        </attributions>
-        <attributions format="HTML" lgCode="FR">
-            <attributionsDelai>22/08/2017 23:59</attributionsDelai>
-            <attributionsDelaiAccepted>22/08/2017 23:59</attributionsDelaiAccepted>
-        </attributions>
-    </request>
-</POETRY>
+        $actual = true;
+        $message = '';
+        try {
+            Assert::assertContainsXml($contains, $target);
+        } catch (\Exception $e) {
+            $actual = false;
+            $message = $e->getMessage();
+        }
 
-XML;
+        $this->assertEquals($expected, $actual, $message);
+    }
 
-        $expected = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="">
-    <request communication="synchrone" id="2843832" type="status">
-        <demandeId>
-            <codeDemandeur>TEST</codeDemandeur>
-            <annee>2017</annee>
-            <numero>40025</numero>
-            <version>3</version>
-            <partie>6</partie>
-            <produit>TRA</produit>
-        </demandeId>
-    </request>
-        <status code="ONG" lgCode="DE" type="attribution">
-            <statusDate>31/07/2017</statusDate>
-            <statusTime>00:00:00</statusTime>
-        </status>    
-</POETRY>
-XML;
-
-        Assert::assertContainsXml($expected, $actual);
+    /**
+     * @return array
+     */
+    public function containsProvider()
+    {
+        return Yaml::parse(file_get_contents(__DIR__.'/../../fixtures/contains.yml'));
     }
 }

@@ -36,32 +36,61 @@ class Assert extends \PHPUnit_Framework_Assert
     /**
      * Assert that the expected XML is contained in the actual one.
      *
-     * @param string $expected
-     * @param string $actual
+     * @param string $contains
+     * @param string $target
      */
-    public static function assertContainsXml($expected, $actual)
+    public static function assertContainsXml($contains, $target)
     {
-        $document = new \DOMDocument();
-        $document->loadXML($expected);
-        $xpathExpected = new \DOMXpath($document);
+        $root = simplexml_load_string($contains)->getName();
+        $contains = self::xmlToArray($contains);
 
         $document = new \DOMDocument();
-        $document->loadXML($actual);
-        $xpathActual = new \DOMXpath($document);
+        $document->loadXML($target);
+        $target = new \DOMXpath($document);
+        $nodes = $target->evaluate('//'.key($contains));
+        if ($nodes->length === 0) {
+            throw new AssertionFailedError("No nodes names {$root} found in target XML.");
+        }
 
-        $expressions = [];
-        /** @var \DOMNode $node */
-        foreach ($xpathExpected->evaluate('//*[count(*) = 0]|//@*') as $node) {
-            $expression = $node->getNodePath();
-            $expressions[] = $expression;
-
-            if ($xpathActual->query($expression)->length == 0) {
-                throw new AssertionFailedError("Expression {$expression} not found.");
-            }
-            $actualNode = $xpathActual->evaluate($expression)->item(0);
-            if ($node->textContent !== $actualNode->textContent) {
-                throw new AssertionFailedError("Expression {$expression}: {$node->textContent} is not equal {$actualNode->textContent}.");
+        $found = false;
+            /** @var \DOMElement $node */
+        foreach ($nodes as $node) {
+            $array = self::nodeToArray($node);
+            try {
+                Assert::assertEquals($array, $contains);
+                $found = true;
+            } catch (\Exception $e) {
             }
         }
+
+        Assert::assertTrue($found, "Node not found.");
+    }
+
+    /**
+     * @param string $xml
+     *
+     * @return array
+     */
+    protected static function xmlToArray($xml)
+    {
+        $element = simplexml_load_string($xml);
+        $json = json_encode($element);
+        $array = json_decode($json, true);
+
+        return [$element->getName() => $array];
+    }
+
+    /**
+     * @param \DOMNode $node
+     *
+     * @return array
+     */
+    protected static function nodeToArray(\DOMNode $node)
+    {
+        $element = simplexml_import_dom($node);
+        $json = json_encode($element);
+        $array = json_decode($json, true);
+
+        return [$element->getName() => $array];
     }
 }
