@@ -96,8 +96,9 @@ class RawPoetryContext implements PoetryAwareInterface
             }
         }
         $raw = implode("\n", $strings);
+        $parsed = Yaml::parse($raw);
 
-        return Yaml::parse($raw);
+        return $this->replaceTokens($parsed);
     }
 
     /**
@@ -111,5 +112,42 @@ class RawPoetryContext implements PoetryAwareInterface
         $message = $parser->getContent('SOAP-ENV:Envelope/SOAP-ENV:Body/ns1:requestService/msg');
         $message = htmlspecialchars_decode($message);
         Assert::assertSameXml($string->getRaw(), $message, 'POETRY');
+    }
+
+    /**
+     * Replace tokens with configuration values.
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    protected function replaceTokens($text)
+    {
+        $parameters = $this->getPoetryParameters();
+        foreach ($this->flattenArray($parameters) as $token => $value) {
+            $text = str_replace($token, $value, $text);
+        }
+
+        return $text;
+    }
+
+    /**
+     * @param $array
+     *
+     * @return array
+     */
+    protected function flattenArray($array)
+    {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($array));
+        $return = [];
+        foreach ($iterator as $value) {
+            $keys = [];
+            foreach (range(0, $iterator->getDepth()) as $depth) {
+                $keys[] = $iterator->getSubIterator($depth)->key();
+            }
+            $return['!'.join('.', $keys)] = $value;
+        }
+
+        return $return;
     }
 }

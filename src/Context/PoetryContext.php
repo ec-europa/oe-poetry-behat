@@ -137,7 +137,8 @@ class PoetryContext extends RawPoetryContext
             throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
         }
 
-        $message = $this->extractSoapBody((string) $requests->latest()->getBody());
+        $body = (string) $requests->latest()->getBody();
+        $message = $this->extractSoapBody($body);
         $parser = $this->poetry->get('parser');
         $parser->addXmlContent($message);
         foreach ($table->getRows() as $row) {
@@ -159,7 +160,8 @@ class PoetryContext extends RawPoetryContext
         }
 
         $contains = $string->getRaw();
-        Assert::assertContainsXml($contains, $this->extractSoapBody((string) $requests->latest()->getBody()));
+        $body = $this->extractSoapBody((string) $requests->latest()->getBody());
+        Assert::assertContainsXml($this->replaceTokens($contains), $body);
     }
 
     protected function extractSoapBody($body)
