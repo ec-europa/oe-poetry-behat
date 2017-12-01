@@ -7,6 +7,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use EC\Behat\PoetryExtension\Context\Services\Assert;
+use EC\Poetry\Poetry;
 
 /**
  * Class PoetryContext
@@ -40,6 +41,17 @@ class PoetryContext extends RawPoetryContext
     {
         $this->setPoetryParameters($this->backupParameters);
         $this->getPoetryMock()->tearDown();
+    }
+
+    /**
+     * @param \Behat\Gherkin\Node\PyStringNode $string
+     *
+     * @Given the Poetry client uses the following settings:
+     */
+    public function setPoetryClientSettings(PyStringNode $string)
+    {
+        $settings = $this->parse($string);
+        $this->poetry = new Poetry($settings);
     }
 
     /**
@@ -164,6 +176,13 @@ class PoetryContext extends RawPoetryContext
         Assert::assertContainsXml($this->replaceTokens($contains), $body);
     }
 
+    /**
+     * Extract SOAP message body.
+     *
+     * @param string $body
+     *
+     * @return string
+     */
     protected function extractSoapBody($body)
     {
         $parser = $this->poetry->get('parser');

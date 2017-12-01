@@ -128,6 +128,12 @@ class RawPoetryContext implements PoetryAwareInterface
             $text = str_replace($token, $value, $text);
         }
 
+        foreach ($this->getPoetry()->getSettings()->getSettings() as $name => $value) {
+            if (is_string($value)) {
+                $text = str_replace("!poetry.{$name}", $value, $text);
+            }
+        }
+
         return $text;
     }
 

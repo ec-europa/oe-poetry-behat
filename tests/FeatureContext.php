@@ -31,6 +31,22 @@ class FeatureContext extends RawPoetryContext
     private $log = __DIR__.'/test.log';
 
     /**
+     * @var \EC\Behat\PoetryExtension\Context\PoetryContext
+     */
+    private $poetryContext;
+
+    /**
+     * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
+     *
+     * @BeforeScenario
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $environment = $scope->getEnvironment();
+        $this->poetryContext = $environment->getContext('EC\Behat\PoetryExtension\Context\PoetryContext');
+    }
+
+    /**
      * @param \Behat\Behat\Hook\Scope\BeforeScenarioScope $scope
      *
      * @BeforeScenario @poetry
@@ -90,7 +106,7 @@ class FeatureContext extends RawPoetryContext
     public function sendMessage($name, PyStringNode $string)
     {
         /** @var \EC\Poetry\Messages\MessageInterface $message */
-        $poetry = $this->poetry;
+        $poetry = $this->poetryContext->getPoetry();
         $wsdl = $this->poetryMock->getServiceUrl('/wsdl');
         $poetry->getSettings()->set('service.wsdl', $wsdl);
         $message = $poetry->get($name)->withArray($this->parse($string));

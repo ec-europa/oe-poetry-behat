@@ -26,7 +26,16 @@ class RawPoetryContextTest extends TestCase
     public function testReplaceTokens($text, $expected)
     {
         $context = new RawPoetryContext();
-        $poetry = new Poetry();
+        $poetry = new Poetry([
+            'identifier.code' => 'STSI',
+            'identifier.year' => '2017',
+            'identifier.number' => '40017',
+            'identifier.version' => '0',
+            'identifier.part' => '11',
+            'client.wsdl' => 'http://my-client.eu/wsdl',
+            'notification.username' => 'foo',
+            'notification.password' => 'bar',
+        ]);
         $mock = new PoetryMock($poetry, [
             'application' => [
             'base_url' => 'http://localhost:8082',
@@ -42,6 +51,7 @@ class RawPoetryContextTest extends TestCase
             ],
         ]);
         $context->setPoetryMock($mock);
+        $context->setPoetry($poetry);
 
         $actual = $this->invokeMethod($context, 'replaceTokens', [$text]);
         $this->assertEquals($expected, $actual);
@@ -76,6 +86,7 @@ class RawPoetryContextTest extends TestCase
         return [
           ['<test>!application.base_url!application.endpoint</test>', '<test>http://localhost:8082/notification</test>'],
           ['!service.host !service.port !service.username !service.password', 'localhost 8082 foo bar'],
+          ['!poetry.identifier.code !poetry.notification.username', 'STSI foo'],
         ];
     }
 }

@@ -66,7 +66,7 @@ Feature: Server responses
         </request>
     </POETRY>
     """
-@run
+
   Scenario: Poetry server can return a response from a message array.
     Given Poetry will return the following "response.status" message response:
     """
@@ -189,4 +189,65 @@ Feature: Server responses
             <documentSourceLangPages>1</documentSourceLangPages>
         </documentSourceLang>
     </documentSource>
+    """
+
+  Scenario: Test Poetry client with specific settings and token replacement.
+
+    Given the Poetry client uses the following settings:
+    """
+      identifier.code: STSI
+      identifier.year: 2017
+      identifier.number: 40017
+      identifier.version: 0
+      identifier.part: 11
+      client.wsdl: http://my-client.eu/wsdl
+      notification.username: foo
+      notification.password: bar
+    """
+
+    And Poetry will return the following XML response:
+    """
+    <?xml version="1.0" encoding="utf-8"?><POETRY xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://intragate.ec.europa.eu/DGT/poetry_services/poetry.xsd">
+        <request communication="synchrone" id="WEB/2017/40029/0/0/TRA" type="status">
+            <demandeId>
+                <codeDemandeur>WEB</codeDemandeur>
+                <annee>2017</annee>
+                <numero>40029</numero>
+                <version>0</version>
+                <partie>0</partie>
+                <produit>TRA</produit>
+            </demandeId>
+            <status type="request" code="0">
+                <statusDate>06/10/2017</statusDate>
+                <statusTime>02:41:53</statusTime>
+                <statusMessage>OK</statusMessage>
+            </status>
+        </request>
+    </POETRY>
+    """
+
+    When the test application sends the following "request.create_translation_request" message to Poetry:
+    """
+      details:
+        client_id: 'Job ID 3999'
+        title: 'NE-CMS: Erasmus+ - Erasmus Mundus Joint Master Degrees'
+        author: 'IE/CE/EAC'
+        responsible: 'EAC'
+        requester: 'IE/CE/EAC/C/4'
+        applicationId: 'FPFIS'
+        delay: '12/09/2017'
+        reference_files_remark: 'https://ec.europa.eu/programmes/erasmus-plus/opportunities-for-individuals/staff-teaching/erasmus-mundus_en'
+        procedure: 'NEANT'
+        destination: 'PUBLIC'
+        type: 'INTER'
+    """
+
+    And Poetry service received request should contain the following XML portion:
+    """
+    <retour type="webService" action="UPDATE">
+       <retourUser>foo</retourUser>
+       <retourPassword>bar</retourPassword>
+       <retourAddress>!poetry.client.wsdl</retourAddress>
+       <retourPath>handle</retourPath>
+    </retour>
     """
