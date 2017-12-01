@@ -7,6 +7,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use EC\Behat\PoetryExtension\Context\Services\Assert;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
  * Class PoetryContext
@@ -131,13 +132,7 @@ class PoetryContext extends RawPoetryContext
      */
     public function assertPartialServiceRequest(TableNode $table)
     {
-        /** @var \EC\Poetry\Services\Parser $parser */
-        $requests = $this->poetryMock->getHttp()->requests;
-        if ($requests->count() == 0) {
-            throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
-        }
-
-        $message = $this->extractSoapBody((string) $requests->latest()->getBody());
+        $message = $this->getLastRequest();
         $parser = $this->poetry->get('parser');
         $parser->addXmlContent($message);
         foreach ($table->getRows() as $row) {
@@ -152,16 +147,46 @@ class PoetryContext extends RawPoetryContext
      */
     public function assertPartialXmlServiceRequest(PyStringNode $string)
     {
+        Assert::assertContainsXml($string->getRaw(), $this->getLastRequest());
+    }
+
+    /**
+     * @param string                        $name
+     * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @Then Poetry service received :name request should satisfy the following expressions:
+     */
+    public function assertExpressionsOnRequest($name, TableNode $table)
+    {
+        $language = new ExpressionLanguage();
+        $message = $this->getLastRequest();
+        /** @var \EC\Poetry\Messages\Requests\AbstractRequest $request */
+        $request = $this->poetry->get($name)->fromXml($message);
+
+        foreach ($table->getRowsHash() as $expression => $expected) {
+            $language->evaluate($expression, ['request' => $request]);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLastRequest()
+    {
         /** @var \EC\Poetry\Services\Parser $parser */
         $requests = $this->poetryMock->getHttp()->requests;
         if ($requests->count() == 0) {
             throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
         }
 
-        $contains = $string->getRaw();
-        Assert::assertContainsXml($contains, $this->extractSoapBody((string) $requests->latest()->getBody()));
+        return $this->extractSoapBody((string) $requests->latest()->getBody());
     }
 
+    /**
+     * @param string $body
+     *
+     * @return string
+     */
     protected function extractSoapBody($body)
     {
         $parser = $this->poetry->get('parser');

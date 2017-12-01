@@ -190,3 +190,7 @@ Feature: Server responses
         </documentSourceLang>
     </documentSource>
     """
+
+    And Poetry service received "request.create_review_request" request should satisfy the following expressions:
+      | request.getIdentifier().getCode() | STSI |
+      | request.getIdentifier().getYear() | 2017 |
