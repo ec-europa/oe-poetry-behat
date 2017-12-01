@@ -50,6 +50,22 @@ Service parameters can be also overridden in your Behat scenarios (see below).
 
 All scenarios and/or features that wish to use the extension's steps will need to be tagged with `@poetry`.
 
+To instantiate test Poetry client with redefined settings use:
+
+```gherkin
+Given the Poetry client uses the following settings:
+"""
+  identifier.code: STSI
+  identifier.year: 2017
+  identifier.number: 40017
+  identifier.version: 0
+  identifier.part: 11
+  client.wsdl: http://my-client.eu/wsdl
+  notification.username: foo
+  notification.password: bar
+"""
+```
+
 To send a raw XML notification message to the client endpoint use:
 
 ```gherkin
@@ -138,3 +154,25 @@ When Poetry service uses the following settings:
 For more detailed examples please refer to the Poetry Behat Extension's [tests features](features) baring in mind that
 steps beginning with `Given the test application...` are only used to test the extension itself and, thus, not available
 to the extension users.
+
+### Token replacement
+
+Both Behat extension settings and current Poetry client settings can be used in Behat steps as replacement tokens.
+The following tokens will be automatically replaced:
+
+- Behat extension settings in dot-notation prefixed by `!`, like `!service.host` or `!service.port`
+- Poetry client string settings in dot-notation prefixed by `!poetry.`, like `!poetry.client.wsdl`.
+
+Token replacements can be used as follow:
+
+```gherkin
+And Poetry service received request should contain the following XML portion:
+"""
+<retour type="webService" action="UPDATE">
+   <retourUser>foo</retourUser>
+   <retourPassword>bar</retourPassword>
+   <retourAddress>!poetry.client.wsdl</retourAddress>
+   <retourPath>handle</retourPath>
+</retour>
+"""
+```
