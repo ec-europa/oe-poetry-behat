@@ -62,7 +62,7 @@ Feature: Server notifications
     """
 
     Then client response contains the following text:
-      | <statusMessage>OK</statusMessage> |
+      | <statusMessage><![CDATA[OK]]></statusMessage> |
 
     And the test application log should contain the following entries:
       | TestApplication.INFO: poetry.notification_handler.received_notification |

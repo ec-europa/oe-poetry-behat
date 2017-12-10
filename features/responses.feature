@@ -183,8 +183,8 @@ Feature: Server responses
     And Poetry service received request should contain the following XML portion:
     """
     <documentSource format="HTML" legiswrite="No">
-        <documentSourceName>content.html</documentSourceName>
-        <documentSourceFile>BASE64ENCODEDFILECONTENT</documentSourceFile>
+        <documentSourceName><![CDATA[content.html]]></documentSourceName>
+        <documentSourceFile><![CDATA[BASE64ENCODEDFILECONTENT]]></documentSourceFile>
         <documentSourceLang lgCode="EN">
             <documentSourceLangPages>1</documentSourceLangPages>
         </documentSourceLang>
@@ -245,9 +245,9 @@ Feature: Server responses
     And Poetry service received request should contain the following XML portion:
     """
     <retour type="webService" action="UPDATE">
-       <retourUser>foo</retourUser>
-       <retourPassword>bar</retourPassword>
-       <retourAddress>!poetry.client.wsdl</retourAddress>
-       <retourPath>handle</retourPath>
+       <retourUser><![CDATA[foo]]></retourUser>
+       <retourPassword><![CDATA[bar]]></retourPassword>
+       <retourAddress><![CDATA[!poetry.client.wsdl]]></retourAddress>
+       <retourPath><![CDATA[handle]]></retourPath>
     </retour>
     """
