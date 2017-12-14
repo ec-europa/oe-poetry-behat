@@ -186,7 +186,7 @@ Feature: Server responses
         <documentSourceName><![CDATA[content.html]]></documentSourceName>
         <documentSourceFile><![CDATA[BASE64ENCODEDFILECONTENT]]></documentSourceFile>
         <documentSourceLang lgCode="EN">
-            <documentSourceLangPages>1</documentSourceLangPages>
+            <documentSourceLangPages><![CDATA[1]]></documentSourceLangPages>
         </documentSourceLang>
     </documentSource>
     """
