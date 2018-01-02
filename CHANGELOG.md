@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.3.2](https://github.com/ec-europa/oe-poetry-behat/tree/0.3.2) (2018-01-02)
+[Full Changelog](https://github.com/ec-europa/oe-poetry-behat/compare/0.3.1...0.3.2)
+
+**Closed issues:**
+
+- Bump HTTP Mock version [\#17](https://github.com/ec-europa/oe-poetry-behat/issues/17)
+- Fix Client and HTTP Mock versions [\#10](https://github.com/ec-europa/oe-poetry-behat/issues/10)
+
 ## [0.3.1](https://github.com/ec-europa/oe-poetry-behat/tree/0.3.1) (2017-12-21)
 [Full Changelog](https://github.com/ec-europa/oe-poetry-behat/compare/0.3.0...0.3.1)
 
@@ -10,6 +18,7 @@
 
 **Merged pull requests:**
 
+- Issue \#10: Bump http mock version. [\#16](https://github.com/ec-europa/oe-poetry-behat/pull/16) ([ademarco](https://github.com/ademarco))
 - Fix tests to consider CDATA attributes \#14 [\#15](https://github.com/ec-europa/oe-poetry-behat/pull/15) ([ademarco](https://github.com/ademarco))
 
 ## [0.3.0](https://github.com/ec-europa/oe-poetry-behat/tree/0.3.0) (2017-12-01)
