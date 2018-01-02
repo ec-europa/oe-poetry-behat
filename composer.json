@@ -7,7 +7,7 @@
     "license": "EUPL-1.1",
     "require": {
         "ec-europa/oe-poetry-client": "~0",
-        "internations/http-mock": "dev-master",
+        "internations/http-mock": "~0.10",
         "behat/behat": "^3",
         "phpunit/phpunit": "^5"
     },
