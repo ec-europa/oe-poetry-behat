@@ -159,6 +159,39 @@ class PoetryContext extends RawPoetryContext
     }
 
     /**
+     * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @Then Poetry service received request should contain the following text in encoded XML:
+     */
+    public function assertEncodedServiceRequest(TableNode $table)
+    {
+        /** @var \EC\Poetry\Services\Parser $parser */
+        $requests = $this->poetryMock->getHttp()->requests;
+        if ($requests->count() == 0) {
+            throw new \InvalidArgumentException("No request was performed on the mock Poetry service");
+        }
+
+        $body = (string) $requests->latest()->getBody();
+        $message = $this->extractSoapBody($body);
+
+        /**
+         * @todo use poetry object after fixing #63
+         * $soapBody = $this->extractSoapBody($body);
+         * $poetry = new Poetry();
+         * $message = $poetry->get('request.create_translation_request');
+         * $message->fromXml($soapBody);
+         */
+
+        $parser = $this->poetry->get('parser');
+        $parser->addXmlContent($message);
+        $documentSourceFile = $parser->getContent('POETRY/request/documentSource/documentSourceFile');
+        $encodedXml = base64_decode($documentSourceFile);
+        foreach ($table->getRows() as $row) {
+            Assert::assertContains($row[0], $encodedXml);
+        }
+    }
+
+    /**
      * @param \Behat\Gherkin\Node\PyStringNode $string
      *
      * @Then Poetry service received request should contain the following XML portion:
