@@ -12,7 +12,7 @@
         "phpunit/phpunit": "^5"
     },
     "require-dev": {
-        "ec-europa/oe-code-review": "^0.1.0",
+        "openeuropa/code-review": "^0.2",
         "monolog/monolog": "^1.23"
     },
     "autoload": {
