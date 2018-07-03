@@ -3,13 +3,14 @@
 namespace EC\Behat\PoetryExtension\Context\Services;
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Assert as PhpunitFrameworkAssert;
 
 /**
  * Class Assert
  *
  * @package EC\Behat\PoetryExtension\Context\Services
  */
-class Assert extends \PHPUnit_Framework_Assert
+class Assert extends PhpunitFrameworkAssert
 {
     /**
      * Assert that two XML messages are the same.
