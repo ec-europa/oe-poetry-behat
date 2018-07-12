@@ -1,6 +1,5 @@
 # Poetry Client Behat Extension
-
-[![Build Status](https://travis-ci.org/ec-europa/oe-poetry-behat.svg?branch=master)](https://travis-ci.org/ec-europa/oe-poetry-behat)
+[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe-poetry-behat/status.svg)](https://drone.fpfis.eu/openeuropa/oe-poetry-behat/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ec-europa/oe-poetry-behat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ec-europa/oe-poetry-behat/?branch=master)
 
 Behat extension for the European Commission's [Poetry Client](https://github.com/ec-europa/oe-poetry-client).
