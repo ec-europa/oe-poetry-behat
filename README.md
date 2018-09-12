@@ -4,6 +4,25 @@
 
 Behat extension for the European Commission's [Poetry Client](https://github.com/ec-europa/oe-poetry-client).
 
+## Installation Using Docker Compose
+
+Requirements:
+
+- [Docker](https://www.docker.com/get-docker)
+- [Docker-compose](https://docs.docker.com/compose/)
+
+Copy `docker-compose.yml.dist` into `docker-compose.yml`.
+
+You can make any alterations you need for your local Docker setup. However, the defaults should be enough to set the
+project up. Note that there are mac specific settings available in the `docker-compose.yml.dist`.
+
+Run:
+
+```
+$ docker-compose up -d
+$ docker-compose exec web composer install
+```
+
 ## Setup
 
 Load the Poetry context and configure the extension as shown below:
