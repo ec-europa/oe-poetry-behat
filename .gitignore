@@ -4,3 +4,4 @@ phpunit.xml
 composer.lock
 *.log
 .idea
+docker-compose.yml
