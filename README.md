@@ -1,8 +1,27 @@
 # Poetry Client Behat Extension
-[![Build Status](https://drone.fpfis.eu/api/badges/openeuropa/oe-poetry-behat/status.svg)](https://drone.fpfis.eu/openeuropa/oe-poetry-behat/)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ec-europa/oe-poetry-behat/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ec-europa/oe-poetry-behat/?branch=master)
+[![Build Status](https://drone.fpfis.eu/api/badges/ec-europa/oe-poetry-behat/status.svg)](https://drone.fpfis.eu/ec-europa/oe-poetry-behat/)
+[![Packagist](https://img.shields.io/packagist/v/ec-europa/oe-poetry-behat.svg)](https://packagist.org/packages/ec-europa/oe-poetry-behat)
 
 Behat extension for the European Commission's [Poetry Client](https://github.com/ec-europa/oe-poetry-client).
+
+## Installation Using Docker Compose
+
+Requirements:
+
+- [Docker](https://www.docker.com/get-docker)
+- [Docker-compose](https://docs.docker.com/compose/)
+
+Copy `docker-compose.yml.dist` into `docker-compose.yml`.
+
+You can make any alterations you need for your local Docker setup. However, the defaults should be enough to set the
+project up. Note that there are mac specific settings available in the `docker-compose.yml.dist`.
+
+Run:
+
+```
+$ docker-compose up -d
+$ docker-compose exec web composer install
+```
 
 ## Setup
 
