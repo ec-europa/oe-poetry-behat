@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.4.0](https://github.com/ec-europa/oe-poetry-behat/tree/0.4.0) (2018-09-27)
+[Full Changelog](https://github.com/ec-europa/oe-poetry-behat/compare/0.3.2...0.4.0)
+
+**Merged pull requests:**
+
+- OPENEUROPA-779: Relax dependencies on composer.json [\#25](https://github.com/ec-europa/oe-poetry-behat/pull/25) ([voidtek](https://github.com/voidtek))
+- OPENEUROPA-721: Update code-review and grump.yml.dist file. [\#23](https://github.com/ec-europa/oe-poetry-behat/pull/23) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-623: Update to Phpunit 6. [\#22](https://github.com/ec-europa/oe-poetry-behat/pull/22) ([imanoleguskiza](https://github.com/imanoleguskiza))
+- OPENEUROPA-369: Make sure that all OpenEuropa projects are released under EUPL-1.2 [\#21](https://github.com/ec-europa/oe-poetry-behat/pull/21) ([drupol](https://github.com/drupol))
+- OPENEUROPA-582: Port CI to Drone. [\#20](https://github.com/ec-europa/oe-poetry-behat/pull/20) ([voidtek](https://github.com/voidtek))
+- OPENEUROPA-325: Use OpenEuropa components. [\#19](https://github.com/ec-europa/oe-poetry-behat/pull/19) ([ademarco](https://github.com/ademarco))
+
 ## [0.3.2](https://github.com/ec-europa/oe-poetry-behat/tree/0.3.2) (2018-01-02)
 [Full Changelog](https://github.com/ec-europa/oe-poetry-behat/compare/0.3.1...0.3.2)
 
